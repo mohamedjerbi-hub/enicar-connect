@@ -38,7 +38,7 @@
 
 ```
 ENICAR-Connect/
-├── eni-connect/          # Frontend Angular
+├── eni-connect-frontend/ # Frontend Angular
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── auth/         # Module 1 — Jerbi
@@ -75,7 +75,7 @@ ENICAR-Connect/
 
 ### Frontend Angular
 ```bash
-cd eni-connect
+cd eni-connect-frontend
 npm install
 npm start
 # → http://localhost:4200
