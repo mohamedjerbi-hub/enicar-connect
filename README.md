@@ -1,4 +1,4 @@
-# ENICAR Connect
+ENICAR Connect
 
 > **Plateforme communautaire officielle de l'École Nationale d'Ingénieurs de Carthage**
 
@@ -25,12 +25,12 @@
 
 | # | Module | Responsable | Statut |
 |---|--------|-------------|--------|
-| 1 | Authentification & Sécurité (`@enicar.ucar.tn`) | Jerbi | 🟡 En cours |
-| 2 | Administration & Modération | Jerbi | 🟡 En cours |
-| 3 | Réseau Social (Feed, Events, Messagerie) | Babou | ⬜ À faire |
-| 4 | Réseau Professionnel (Jobs, Mentorat) | Babou | ⬜ À faire |
-| 5 | QR Code Présences & Réservations | Abidi | ⬜ À faire |
-| 6 | Notes, Réclamations & Dashboard | Abidi | ⬜ À faire |
+| 1 | Authentification & Sécurité (`@enicar.ucar.tn`) | Jerbi | En cours... |
+| 2 | Administration & Modération | Jerbi | En cours... |
+| 3 | Réseau Social (Feed, Events, Messagerie) | Babou | À faire |
+| 4 | Réseau Professionnel (Jobs, Mentorat) | Babou | À faire |
+| 5 | QR Code Présences & Réservations | Abidi | À faire |
+| 6 | Notes, Réclamations & Dashboard | Abidi | À faire |
 
 ---
 
