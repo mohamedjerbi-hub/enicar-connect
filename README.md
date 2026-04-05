@@ -1,4 +1,4 @@
-# ENICAR Connect 🏛️
+# ENICAR Connect
 
 > **Plateforme communautaire officielle de l'École Nationale d'Ingénieurs de Carthage**
 
@@ -11,7 +11,7 @@
 
 ---
 
-## 👥 Équipe — INFO2 Groupe C
+## Équipe — INFO2 Groupe C
 
 | Membre | Rôle | Modules |
 |--------|------|---------|
@@ -21,20 +21,20 @@
 
 ---
 
-## 📋 Modules
+## Modules
 
 | # | Module | Responsable | Statut |
 |---|--------|-------------|--------|
-| 1 | 🔐 Authentification & Sécurité (`@enicar.ucar.tn`) | Jerbi | 🟡 En cours |
-| 2 | ⚙️ Administration & Modération | Jerbi | 🟡 En cours |
-| 3 | 📱 Réseau Social (Feed, Events, Messagerie) | Babou | ⬜ À faire |
-| 4 | 💼 Réseau Professionnel (Jobs, Mentorat) | Babou | ⬜ À faire |
-| 5 | 📸 QR Code Présences & Réservations | Abidi | ⬜ À faire |
-| 6 | 📊 Notes, Réclamations & Dashboard | Abidi | ⬜ À faire |
+| 1 | Authentification & Sécurité (`@enicar.ucar.tn`) | Jerbi | 🟡 En cours |
+| 2 | Administration & Modération | Jerbi | 🟡 En cours |
+| 3 | Réseau Social (Feed, Events, Messagerie) | Babou | ⬜ À faire |
+| 4 | Réseau Professionnel (Jobs, Mentorat) | Babou | ⬜ À faire |
+| 5 | QR Code Présences & Réservations | Abidi | ⬜ À faire |
+| 6 | Notes, Réclamations & Dashboard | Abidi | ⬜ À faire |
 
 ---
 
-## 🗂️ Structure du dépôt
+## Structure du dépôt
 
 ```
 ENICAR-Connect/
@@ -65,7 +65,7 @@ ENICAR-Connect/
 
 ---
 
-## 🚀 Démarrage rapide
+## Démarrage rapide
 
 ### Prérequis
 - **Node.js** ≥ 18.x + npm
@@ -100,11 +100,11 @@ mvn spring-boot:run
 | `mohamed.babou@enicar.ucar.tn` | `babou123` | Étudiant |
 | `dhia.abidi@enicar.ucar.tn` | `abidi123` | Étudiant |
 
-> ⚠️ **Seules les adresses `@enicar.ucar.tn` sont autorisées**
+> **Seules les adresses `@enicar.ucar.tn` sont autorisées**
 
 ---
 
-## 🌿 Stratégie de branches
+## Stratégie de branches
 
 ```
 main        ← Production stable (protégée)
@@ -122,7 +122,7 @@ develop     ← Intégration continue
 
 ---
 
-## 🛠️ Stack technique
+## Stack technique
 
 | Couche | Tech | Version |
 |--------|------|---------|
