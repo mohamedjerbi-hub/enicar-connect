@@ -51,9 +51,15 @@ npm start
 Ouvrez un autre terminal. Assurez-vous d'avoir Java 17 installé et la variable `JAVA_HOME` configurée.
 ```bash
 cd enicar-connect-backend
+..\.tools\apache-maven-3.9.9\bin\mvn.cmd clean compile
+..\.tools\apache-maven-3.9.9\bin\mvn.cmd spring-boot:run
+# L'API tourne sur http://localhost:8081 (server.port dans application.properties)
+```
+
+Si Maven est installé globalement sur votre machine, vous pouvez utiliser à la place :
+```bash
 mvn clean compile
 mvn spring-boot:run
-# L'API tourne sur http://localhost:8080 ou 8081 (selon application.properties)
 ```
 
 > **Note :** Les tâches (Features / Bugs) de développement actives sont directement suivies via l'onglet **Issues** de ce dépôt GitHub et réparties entre les membres de l'équipe.

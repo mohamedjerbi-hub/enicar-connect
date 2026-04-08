@@ -1,29 +1,31 @@
-# Ignorer les modules Node.js du Frontend (Très Lourd)
-enicar-connect-frontend/node_modules/
-enicar-connect-frontend/dist/
-
-# Ignorer les fichiers temporaires et de build Java du Backend
-enicar-connect-backend/target/
-*.class
-*.jar
-*.war
-
-# Fichiers Serveur et Bases de données générées localement (H2)
-enicar-connect-backend/database.mv.db
-enicar-connect-backend/database.trace.db
-enicar-connect-backend/uploads/
-
-# Outils de développement (IDE) et Système d'exploitation
+# Enicar Connect Global Ignore
 .idea/
 .vscode/
-.settings/
-.project
-.classpath
 *.iml
-Thumbs.db
+*.log
 .DS_Store
+.tools/
+requirements.txt
 
-# Fichiers locaux non publiés
-*.jpg
-prototypes/
-prototypes.zip
+# Env variables
+.env
+
+# Backend Ignores
+enicar-connect-backend/target/
+enicar-connect-backend/*.jar
+enicar-connect-backend/*.war
+enicar-connect-backend/.mvn/
+enicar-connect-backend/mvnw
+enicar-connect-backend/mvnw.cmd
+enicar-connect-backend/database.mv.db
+enicar-connect-backend/database.trace.db
+
+# Frontend Ignores
+enicar-connect-frontend/node_modules/
+enicar-connect-frontend/dist/
+enicar-connect-frontend/tmp/
+enicar-connect-frontend/out-tsc/
+enicar-connect-frontend/bazel-out/
+enicar-connect-frontend/.pnp
+enicar-connect-frontend/.pnp.js
+enicar-connect-frontend/.angular/

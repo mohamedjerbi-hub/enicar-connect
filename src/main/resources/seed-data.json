@@ -1,0 +1,255 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "firstName": "Mohamed",
+            "lastName": "Jerbi",
+            "email": "student@enicar.ucar.tn",
+            "password": "password123",
+            "role": "STUDENT",
+            "department": "Génie Informatique",
+            "level": "INFO2",
+            "avatarColor": "#C9A84C",
+            "avatarBg": "rgba(201,168,76,0.1)"
+        },
+        {
+            "id": 2,
+            "firstName": "Faouzi",
+            "lastName": "Jaidi",
+            "email": "teacher@enicar.ucar.tn",
+            "password": "password123",
+            "role": "TEACHER",
+            "department": "Génie Informatique",
+            "avatarColor": "#10b981",
+            "avatarBg": "rgba(16,185,129,0.1)"
+        },
+        {
+            "id": 3,
+            "firstName": "Admin",
+            "lastName": "Enicar",
+            "email": "admin@enicar.ucar.tn",
+            "password": "admin123",
+            "role": "ADMIN_STAFF",
+            "avatarColor": "#f43f5e",
+            "avatarBg": "rgba(244,63,94,0.1)"
+        },
+        {
+            "id": 5,
+            "firstName": "Sami",
+            "lastName": "Belhassen",
+            "email": "alumni@enicar.ucar.tn",
+            "password": "password123",
+            "role": "ALUMNI",
+            "department": "Génie Mécatronique",
+            "avatarColor": "#6366f1",
+            "avatarBg": "rgba(99,102,241,0.1)"
+        }
+    ],
+    "groups": [
+        {
+            "id": 1,
+            "name": "INFO2 — Groupe C",
+            "description": "Groupe officiel de la classe INFO2-C. Ressources et annonces.",
+            "groupType": "FILIERE",
+            "privacy": "PUBLIC",
+            "creatorId": 2,
+            "icon": "fas fa-graduation-cap",
+            "iconColor": "#C9A84C",
+            "bannerGradient": "linear-gradient(135deg,#0A1628,#1a3060)"
+        },
+        {
+            "id": 2,
+            "name": "Club Robotique ENICAR",
+            "description": "Exploration et innovation en robotique.",
+            "groupType": "CLUB",
+            "privacy": "PUBLIC",
+            "creatorId": 1,
+            "icon": "fas fa-microchip",
+            "iconColor": "#34d399",
+            "bannerGradient": "linear-gradient(135deg,#0A1628,#C9A84C 160%)"
+        }
+    ],
+    "posts": [
+        {
+            "id": 1,
+            "authorId": 2,
+            "body": "Bonjour à tous les étudiants de **INFO2-C**. Le cours de demain est décalé à 10h. #Annonce #ENICAR",
+            "visibility": "PUBLIC",
+            "groupId": 1
+        },
+        {
+            "id": 2,
+            "authorId": 1,
+            "body": "Je suis ravi de rejoindre le Club Robotique ! Prêt à construire des choses incroyables. #Robotique #Passion",
+            "visibility": "PUBLIC",
+            "groupId": 2
+        },
+        {
+            "id": 3,
+            "authorId": 5,
+            "body": "En tant qu'Alumni, je propose mon aide pour les projets de fin d'études. N'hésitez pas ! #Mentoring #Alumni",
+            "visibility": "PUBLIC"
+        }
+    ],
+    "comments": [
+        { "postId": 1, "authorId": 1, "text": "Merci pour l'information, Monsieur !" },
+        { "postId": 2, "authorId": 2, "text": "Bienvenue parmi nous !" }
+    ],
+    "likes": [
+        { "postId": 1, "userId": 1 },
+        { "postId": 1, "userId": 3 },
+        { "postId": 2, "userId": 2 },
+        { "postId": 3, "userId": 1 }
+    ],
+    "events": [
+        {
+            "title": "Journée Portes Ouvertes ENI Carthage 2026",
+            "date": "2026-04-20",
+            "time": "09:00",
+            "location": "Campus ENI Carthage, Tunis",
+            "description": "Découvrez nos filières, rencontrez les enseignants et assistez à des démonstrations de projets étudiants. Ouvert à tous.",
+            "category": "Institutionnel",
+            "organizer": "Direction ENI Carthage",
+            "color": "#C9A84C",
+            "maxCapacity": 300,
+            "ownerId": 3
+        },
+        {
+            "title": "Hackathon IA & Innovation 2026",
+            "date": "2026-05-03",
+            "time": "08:00",
+            "location": "Salle des Conférences, ENICAR",
+            "description": "48 heures pour concevoir une solution innovante à base d'intelligence artificielle. Équipes de 3 à 5 étudiants. Prix à gagner !",
+            "category": "Académique",
+            "organizer": "Club Robotique ENICAR",
+            "color": "#6366f1",
+            "maxCapacity": 120,
+            "ownerId": 1
+        },
+        {
+            "title": "Conférence : Cybersécurité au quotidien",
+            "date": "2026-04-25",
+            "time": "14:00",
+            "location": "Amphithéâtre A, ENICAR",
+            "description": "Un expert en sécurité informatique présente les menaces actuelles et les bonnes pratiques de protection des données personnelles et professionnelles.",
+            "category": "Académique",
+            "organizer": "Département Génie Informatique",
+            "color": "#10b981",
+            "maxCapacity": 200,
+            "ownerId": 2
+        },
+        {
+            "title": "Tournoi de Football Inter-Filières",
+            "date": "2026-05-10",
+            "time": "10:00",
+            "location": "Terrain de Sport ENICAR",
+            "description": "Compétition sportive annuelle entre les filières de l'école. Inscrivez votre équipe et défendez les couleurs de votre département !",
+            "category": "Sportif",
+            "organizer": "Club Sportif ENICAR",
+            "color": "#f43f5e",
+            "maxCapacity": 80,
+            "ownerId": 3
+        },
+        {
+            "title": "Atelier : Spring Boot & Microservices",
+            "date": "2026-04-30",
+            "time": "13:00",
+            "location": "Labo Info 3, ENICAR",
+            "description": "Workshop pratique pour apprendre à construire des APIs REST professionnelles avec Spring Boot 3. Niveau intermédiaire requis.",
+            "category": "Académique",
+            "organizer": "Faouzi Jaidi",
+            "color": "#C9A84C",
+            "maxCapacity": 30,
+            "ownerId": 2
+        }
+    ],
+    "jobs": [
+        {
+            "title": "Développeur Full Stack Angular / Spring Boot",
+            "company": "Carthage Solutions",
+            "location": "Lac 2, Tunis",
+            "type": "Stage",
+            "description": "Nous recherchons un stagiaire motivé pour rejoindre notre équipe de développement. Vous travaillerez sur une plateforme SaaS en Angular 17 et Spring Boot 3. Encadrement assuré par des seniors.",
+            "tags": "Angular,Spring Boot,Java,TypeScript",
+            "authorId": 5
+        },
+        {
+            "title": "Ingénieur DevOps Junior",
+            "company": "TechNova Systems",
+            "location": "Ariana, Tunis",
+            "type": "CDI",
+            "description": "Rejoignez notre équipe infrastructure pour automatiser nos pipelines CI/CD, gérer nos clusters Kubernetes et contribuer à la fiabilité de nos plateformes cloud.",
+            "tags": "Docker,Kubernetes,CI/CD,Linux",
+            "authorId": 5
+        },
+        {
+            "title": "Développeur Mobile React Native",
+            "company": "StartupLab Tunisia",
+            "location": "El Ghazala, Ariana",
+            "type": "Stage",
+            "description": "Stage de 3 à 6 mois au sein d'une startup dynamique. Développement de fonctionnalités cross-platform pour une app mobile B2C. Flexibilité et environnement agile.",
+            "tags": "React Native,JavaScript,Mobile,API REST",
+            "authorId": 3
+        },
+        {
+            "title": "Analyste Cybersécurité",
+            "company": "SecureNet Maghreb",
+            "location": "Centre Urbain Nord, Tunis",
+            "type": "CDD",
+            "description": "Mission de 12 mois en Sécurité Opérationnelle. Analyse des incidents, supervision SIEM, rédaction de rapports de vulnérabilités et participation aux audits de sécurité.",
+            "tags": "Cybersécurité,SIEM,Pentest,Réseaux",
+            "authorId": 5
+        },
+        {
+            "title": "Ingénieur IA & Data Science",
+            "company": "DataVision TN",
+            "location": "Tunis",
+            "type": "CDI",
+            "description": "Développement de modèles de machine learning pour l'analyse prédictive dans les domaines de la finance et de la santé. Stack Python, TensorFlow, FastAPI.",
+            "tags": "Python,Machine Learning,TensorFlow,Data",
+            "authorId": 3
+        }
+    ],
+    "resources": [
+        {
+            "title": "Cours Complet : Algorithmique et Structures de Données",
+            "category": "Cours",
+            "fileSize": "4.2 MB",
+            "filePath": "/uploads/resources/algo-structures-donnees.pdf",
+            "icon": "fas fa-file-pdf",
+            "authorId": 2
+        },
+        {
+            "title": "TD : Programmation Orientée Objet Java — Série 3",
+            "category": "TD / TP",
+            "fileSize": "1.8 MB",
+            "filePath": "/uploads/resources/td-poo-java-serie3.pdf",
+            "icon": "fas fa-file-pdf",
+            "authorId": 2
+        },
+        {
+            "title": "Examen Final S1 2024-2025 — Réseaux Informatiques",
+            "category": "Examens",
+            "fileSize": "820 KB",
+            "filePath": "/uploads/resources/examen-reseaux-s1-2024.pdf",
+            "icon": "fas fa-file-pdf",
+            "authorId": 2
+        },
+        {
+            "title": "Rapport PFE : Plateforme de Gestion des Stages — ENICAR 2025",
+            "category": "PFE",
+            "fileSize": "6.5 MB",
+            "filePath": "/uploads/resources/pfe-gestion-stages-2025.pdf",
+            "icon": "fas fa-file-pdf",
+            "authorId": 5
+        },
+        {
+            "title": "TP Spring Boot : Création d'une API REST sécurisée",
+            "category": "TD / TP",
+            "fileSize": "2.3 MB",
+            "filePath": "/uploads/resources/tp-spring-boot-api-rest.pdf",
+            "icon": "fas fa-file-pdf",
+            "authorId": 2
+        }
+    ]
+}
