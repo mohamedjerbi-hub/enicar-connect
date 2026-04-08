@@ -37,29 +37,26 @@ La conception et le développement de cette plateforme ont été répartis équi
 
 ### Comment lancer l'application en développement
 
-**1. Lancement du Frontend (Angular) :**
-Ouvrez un terminal et exécutez les commandes suivantes :
+Puisque l'application a été unifiée en un **monolithe complet**, le frontend Angular est directement géré par Maven et intégré à Spring Boot.
+
+**Lancement Global (Backend + Frontend) :**
+Ouvrez votre terminal à la racine du projet et exécutez ces commandes :
 ```bash
-cd enicar-connect-frontend
+# Compilation totale de la plateforme (Installe Node, Build Angular, et Package Spring)
+.\mvnw.cmd clean install -DskipTests
+
+# Exécution du serveur
+.\mvnw.cmd spring-boot:run
+```
+> L'application complète (UI + API) sera accessible sur **http://localhost:8081**. L'API tournera avec une base de données en mémoire (H2) pré-peuplée pour vous faciliter le test.
+
+**Développement UI ciblé (Hot-Reloading) :**
+Si vous développez spécifiquement le frontend et souhaitez le rafraîchissement en direct :
+```bash
+cd src\main\frontend
 npm install
-# Construire et lancer le serveur de développement local
 npm start
-# L'application sera accessible sur http://localhost:4200
-```
-
-**2. Lancement du Backend (Spring Boot) :**
-Ouvrez un autre terminal. Assurez-vous d'avoir Java 17 installé et la variable `JAVA_HOME` configurée.
-```bash
-cd enicar-connect-backend
-..\.tools\apache-maven-3.9.9\bin\mvn.cmd clean compile
-..\.tools\apache-maven-3.9.9\bin\mvn.cmd spring-boot:run
-# L'API tourne sur http://localhost:8081 (server.port dans application.properties)
-```
-
-Si Maven est installé globalement sur votre machine, vous pouvez utiliser à la place :
-```bash
-mvn clean compile
-mvn spring-boot:run
+# Le Frontend de développement sera sur http://localhost:4200
 ```
 
 > **Note :** Les tâches (Features / Bugs) de développement actives sont directement suivies via l'onglet **Issues** de ce dépôt GitHub et réparties entre les membres de l'équipe.
