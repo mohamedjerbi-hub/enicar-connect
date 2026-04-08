@@ -34,7 +34,7 @@ graph TD
         MavenBuild[Maven Build: mvn package]
         DockerImg[Build Docker Image]
         CodePush --> MavenBuild
-        MavenBuild -->|Compiles Angular & Java| DockerImg
+        MavenBuild -->|Compiles Angular and Java| DockerImg
     end
 
     %% Client Boundary
@@ -42,7 +42,7 @@ graph TD
     
     %% Compute Boundary
     subgraph Docker Compose Environment
-        subgraph App Container
+        subgraph AppContainer [App Container]
             Spring["Application Server<br><b>Spring Boot</b>"]
             SpaFilter["Web Filter<br><b>SPA Dispatcher</b>"]
             Flyway["Flyway Migration System"]
@@ -54,8 +54,8 @@ graph TD
     
     %% Connections
     DockerImg -->|Deploys to| AppContainer
-    Client -->|HTTP/REST (TLS)| Spring
-    Client -->|WebSocket (STOMP)| Spring
+    Client -->|HTTPS REST| Spring
+    Client -->|WebSocket STOMP| Spring
     Spring -->|Internal Route| SpaFilter
     SpaFilter -->|Fallback Resolve| Client
     
