@@ -9,16 +9,16 @@ ENICAR Connect follows a standard three-tier architecture containerized via Dock
 ```mermaid
 graph TD
     %% Clients
-    Client[Web Browser / PWA<br><b>Angular</b>]
+    Client["Web Browser / PWA<br><b>Angular</b>"]
     
     %% API Gateway / Proxy
-    NGINX[Reverse Proxy<br><b>NGINX (Port 80/4200)</b>]
+    NGINX["Reverse Proxy<br><b>NGINX (Port 80/4200)</b>"]
     
     %% Backend
-    Spring[Backend Application<br><b>Spring Boot</b>]
+    Spring["Backend Application<br><b>Spring Boot</b>"]
     
     %% Database
-    PG[(<b>PostgreSQL 15</b><br>enicar_db)]
+    PG["<b>PostgreSQL 15</b><br>enicar_db"]
     
     %% Connections
     Client -->|HTTP/REST| NGINX
