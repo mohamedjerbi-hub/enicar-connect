@@ -1,0 +1,105 @@
+<div class="dashboard-wrapper">
+
+  <div class="dashboard-header">
+    <h1>📊 Mon Dashboard</h1>
+    <p class="subtitle">{{ studentEmail }}</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card blue">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-info">
+        <span class="stat-value">{{ average() | number:'1.2-2' }} / 20</span>
+        <span class="stat-label">Moyenne Générale</span>
+      </div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <span class="stat-value">{{ presentCount() }}</span>
+        <span class="stat-label">Présences</span>
+      </div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-icon">❌</div>
+      <div class="stat-info">
+        <span class="stat-value">{{ absentCount() }}</span>
+        <span class="stat-label">Absences</span>
+      </div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">📚</div>
+      <div class="stat-info">
+        <span class="stat-value">{{ grades().length }}</span>
+        <span class="stat-label">Matières notées</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="section">
+    <h2>📝 Mes Notes</h2>
+    <div *ngIf="loadingGrades()" class="loading">Chargement des notes...</div>
+    <div *ngIf="errorGrades()" class="error">{{ errorGrades() }}</div>
+    <table *ngIf="!loadingGrades() && grades().length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>Matière</th>
+          <th>Note</th>
+          <th>Semestre</th>
+          <th>Résultat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let g of grades()">
+          <td>{{ g.subject }}</td>
+          <td>
+            <span [class.score-good]="g.score >= 10" [class.score-bad]="g.score < 10">
+              {{ g.score }} / 20
+            </span>
+          </td>
+          <td>{{ g.semester }}</td>
+          <td>
+            <span class="badge" [class.badge-pass]="g.score >= 10" [class.badge-fail]="g.score < 10">
+              {{ g.score >= 10 ? 'Admis' : 'Recalé' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!loadingGrades() && grades().length === 0 && !errorGrades()" class="empty">
+      Aucune note disponible pour le moment.
+    </div>
+  </div>
+
+  <!-- PRESENCES -->
+  <div class="section">
+    <h2>🗓️ Mes Présences</h2>
+    <div *ngIf="loadingAttendances()" class="loading">Chargement des présences...</div>
+    <div *ngIf="errorAttendances()" class="error">{{ errorAttendances() }}</div>
+    <table *ngIf="!loadingAttendances() && attendances().length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>Cours</th>
+          <th>Date & Heure</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of attendances()">
+          <td>{{ a.courseCode }}</td>
+          <td>{{ a.scannedAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <span class="badge" [class.badge-pass]="a.present" [class.badge-fail]="!a.present">
+              {{ a.present ? '✅ Présent' : '❌ Absent' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!loadingAttendances() && attendances().length === 0 && !errorAttendances()" class="empty">
+      Aucune présence enregistrée pour le moment.
+    </div>
+  </div>
+
+</div>
