@@ -61,5 +61,15 @@ export const routes: Routes = [
         loadComponent: () => import('./features/mentorship/mentorship.component').then(m => m.MentorshipComponent),
         canActivate: [authGuard]
     },
-    { path: '**', redirectTo: 'login' }
-];
+    {
+        path: 'dashboard',
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'attendance',
+        loadComponent: () => import('./features/attendance/attendance.component').then(m => m.AttendanceComponent),
+        canActivate: [authGuard]
+    },
+        { path: '**', redirectTo: 'login' }
+    ];
