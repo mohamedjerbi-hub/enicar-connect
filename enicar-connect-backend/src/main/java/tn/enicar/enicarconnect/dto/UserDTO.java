@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -28,5 +29,6 @@ public class UserDTO {
     private String fullName;
     private String avatarColor;
     private String avatarBg;
+    private Set<String> skills;
     private List<String> permissions;
 }

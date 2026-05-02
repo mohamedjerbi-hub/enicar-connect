@@ -14,7 +14,6 @@ export interface NetworkConnection {
 export interface ConnectionReq {
     id: number;
     sender: NetworkConnection;
-    receiver: NetworkConnection;
     status: string;
     timestamp: string;
 }

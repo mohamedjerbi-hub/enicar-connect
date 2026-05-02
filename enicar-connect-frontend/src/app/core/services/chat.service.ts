@@ -21,7 +21,7 @@ export class ChatService {
 
     // ID mocké de l'utilisateur connecté (pour la démonstration).
     // À remplacer dynamiquement par "auth.service.getCurrentUserId()"
-    public myId = 1;
+    public myId: number | null = null;
 
     private _messages = new BehaviorSubject<ChatMessage[]>([]);
     public messages$ = this._messages.asObservable();
@@ -40,14 +40,20 @@ export class ChatService {
             console.log('✅ Connecté au WebSocket !', frame);
 
             // S'abonner à SA propre file d'attente de messages personnels
+            if (this.myId == null) return;
             this.stompClient.subscribe(`/user/${this.myId}/queue/messages`, (message: IMessage) => {
                 const newMessage: ChatMessage = JSON.parse(message.body);
                 // Ajouter le nouveau message à l'UI
                 this._messages.next([...this._messages.value, newMessage]);
             });
         };
+    }
 
-        this.stompClient.activate();
+    public setCurrentUserId(userId: number): void {
+        this.myId = userId;
+        if (!this.stompClient.active) {
+            this.stompClient.activate();
+        }
     }
 
     public getConversation(partnerId: number): void {
@@ -62,6 +68,7 @@ export class ChatService {
     }
 
     public sendMessage(recipientId: number, content: string): void {
+        if (this.myId == null) return;
         const msg: ChatMessage = {
             senderId: this.myId,
             recipientId: recipientId,

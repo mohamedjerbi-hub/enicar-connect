@@ -6,11 +6,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -47,6 +48,13 @@ public class User {
 
     private String department;
     private String level;
+    private String className;
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "user_skill_keywords", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "skill", nullable = false)
+    private Set<String> skills = new HashSet<>();
 
     private String avatarColor;
     private String avatarBg;

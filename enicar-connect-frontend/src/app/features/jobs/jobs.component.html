@@ -112,6 +112,12 @@
             <div class="job-tags">
                 <span class="tag" *ngFor="let t of j.tags">{{ t }}</span>
             </div>
+            <div class="job-tags" *ngIf="j.compatibilityScore !== undefined">
+                <span class="tag" style="border-color:#22c55e;color:#22c55e;">
+                    Matching: {{ j.compatibilityScore }}%
+                </span>
+                <span class="tag" *ngFor="let s of j.matchedSkills">{{ s }}</span>
+            </div>
             <div class="job-foot">
                 <span class="posted"><i class="far fa-clock"></i> {{ j.posted }}</span>
                 <!-- Apply only for non-owner jobs -->

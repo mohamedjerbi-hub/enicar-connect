@@ -11,8 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups_table")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -32,6 +31,11 @@ public class AppGroup {
     @Column(nullable = false)
     @Builder.Default
     private GroupType groupType = GroupType.THEMATIC;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private GroupKind kind = GroupKind.CUSTOM;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -37,11 +37,10 @@ export class MessagingComponent implements OnInit {
   searchQuery = '';
   myId = this.auth.currentUser()?.id || 1;
 
-  constructor() {
-    this.chatService.myId = this.myId;
-  }
+  constructor() {}
 
   ngOnInit() {
+    this.chatService.setCurrentUserId(this.myId);
     this.loadDirectory();
     this.chatService.messages$.subscribe(msgs => {
       this.activeMessages = msgs;

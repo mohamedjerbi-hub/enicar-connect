@@ -26,4 +26,5 @@ public class RegisterRequest {
     private String role; // STUDENT, TEACHER, ADMIN_STAFF, DIRECTION, ALUMNI
     private String department;
     private String level;
+    private String className;
 }

@@ -39,6 +39,7 @@ interface AuthResponse {
         avatarColor: string;
         avatarBg: string;
         permissions: string[];
+        skills?: string[];
     };
 }
 
@@ -123,6 +124,7 @@ export class AuthService {
             location: 'Tunis, Tunisie',
             avatarColor: apiUser.avatarColor,
             avatarBg: apiUser.avatarBg,
+            skills: apiUser.skills ?? [],
             connections: 0,
             groups: 0,
             projects: 0,

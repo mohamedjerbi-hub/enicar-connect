@@ -10,6 +10,8 @@ import tn.enicar.enicarconnect.model.User;
 import tn.enicar.enicarconnect.service.JobService;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.Map;
 
 @RestController
@@ -41,6 +43,7 @@ public class JobController {
                 .type(requestData.getType())
                 .description(requestData.getDescription())
                 .tags(tagsString)
+                .requiredSkills(resolveRequiredSkills(requestData))
                 .build();
 
         return ResponseEntity.ok(jobService.createJob(jobData, currentUser.getId()));
@@ -62,6 +65,7 @@ public class JobController {
                 .type(requestData.getType())
                 .description(requestData.getDescription())
                 .tags(tagsString)
+                .requiredSkills(resolveRequiredSkills(requestData))
                 .build();
 
         return ResponseEntity.ok(jobService.updateJob(id, updatedData, currentUser.getId()));
@@ -92,5 +96,26 @@ public class JobController {
         private String type;
         private String description;
         private List<String> tags;
+        private Set<String> requiredSkills;
+    }
+
+    private Set<String> resolveRequiredSkills(JobRequestData requestData) {
+        if (requestData.getRequiredSkills() != null && !requestData.getRequiredSkills().isEmpty()) {
+            return normalizeSkills(requestData.getRequiredSkills());
+        }
+        if (requestData.getTags() != null && !requestData.getTags().isEmpty()) {
+            return requestData.getTags().stream()
+                    .filter(skill -> skill != null && !skill.isBlank())
+                    .map(String::trim)
+                    .collect(Collectors.toCollection(java.util.LinkedHashSet::new));
+        }
+        return Set.of();
+    }
+
+    private Set<String> normalizeSkills(Set<String> rawSkills) {
+        return rawSkills.stream()
+                .filter(skill -> skill != null && !skill.isBlank())
+                .map(String::trim)
+                .collect(Collectors.toCollection(java.util.LinkedHashSet::new));
     }
 }

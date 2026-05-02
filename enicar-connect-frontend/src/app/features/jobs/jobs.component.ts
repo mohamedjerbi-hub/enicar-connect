@@ -37,7 +37,7 @@ export class JobsComponent implements OnInit {
       const typeOk = this.activeTypes.length === 0 || this.activeTypes.includes(j.type);
       const locOk = this.activeLocation === 'Tous' || j.location.includes(this.activeLocation);
       return typeOk && locOk;
-    });
+    }).sort((a, b) => (b.compatibilityScore ?? -1) - (a.compatibilityScore ?? -1));
   }
 
   toggleType(t: string): void {
@@ -70,14 +70,14 @@ export class JobsComponent implements OnInit {
     if (!this.formValid()) return;
     const tags = this.tagsInput.split(',').map(t => t.trim()).filter(Boolean);
     if (this.editingId) {
-      this.jobSvc.update(this.editingId, { ...this.form, tags } as Job);
+      this.jobSvc.update(this.editingId, { ...this.form, tags, requiredSkills: tags } as Job);
       this.toast.show('fas fa-save', 'Offre modifiée !');
     } else {
       this.jobSvc.add({
         title: this.form.title!, company: this.form.company!,
         location: this.form.location || 'Tunis',
         type: (this.form.type as Job['type']) || 'Stage',
-        description: this.form.description!, tags
+        description: this.form.description!, tags, requiredSkills: tags
       });
       this.toast.show('fas fa-briefcase', 'Offre publiée !');
     }

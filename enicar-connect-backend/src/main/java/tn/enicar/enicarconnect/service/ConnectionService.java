@@ -1,7 +1,10 @@
 package tn.enicar.enicarconnect.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tn.enicar.enicarconnect.dto.ConnectionRequestDTO;
 import tn.enicar.enicarconnect.dto.UserDTO;
 import tn.enicar.enicarconnect.model.ConnectionRequest;
 import tn.enicar.enicarconnect.model.User;
@@ -12,12 +15,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ConnectionService {
 
     private final ConnectionRequestRepository connectionRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void sendRequest(Long senderId, Long receiverId) {
         User sender = userRepository.findById(senderId).orElseThrow();
         User receiver = userRepository.findById(receiverId).orElseThrow();
@@ -39,8 +44,10 @@ public class ConnectionService {
                 .build();
 
         connectionRepository.save(request);
+        log.info("Connection request sent: senderId={} receiverId={}", senderId, receiverId);
     }
 
+    @Transactional
     public void acceptRequest(Long requestId, Long currentUserId) {
         ConnectionRequest request = connectionRepository.findById(requestId).orElseThrow();
 
@@ -50,8 +57,10 @@ public class ConnectionService {
 
         request.setStatus("ACCEPTED");
         connectionRepository.save(request);
+        log.info("Connection request accepted: requestId={} by userId={}", requestId, currentUserId);
     }
 
+    @Transactional
     public void rejectRequest(Long requestId, Long currentUserId) {
         ConnectionRequest request = connectionRepository.findById(requestId).orElseThrow();
 
@@ -61,8 +70,10 @@ public class ConnectionService {
 
         request.setStatus("REJECTED");
         connectionRepository.save(request);
+        log.info("Connection request rejected: requestId={} by userId={}", requestId, currentUserId);
     }
 
+    @Transactional(readOnly = true)
     public List<UserDTO> getMyNetwork(Long currentUserId) {
         User user = userRepository.findById(currentUserId).orElseThrow();
         return connectionRepository.findAcceptedConnections(user).stream()
@@ -70,9 +81,12 @@ public class ConnectionService {
                 .collect(Collectors.toList());
     }
 
-    public List<ConnectionRequest> getPendingRequests(Long currentUserId) {
+    @Transactional(readOnly = true)
+    public List<ConnectionRequestDTO> getPendingRequests(Long currentUserId) {
         User user = userRepository.findById(currentUserId).orElseThrow();
-        return connectionRepository.findByReceiverAndStatus(user, "PENDING");
+        return connectionRepository.findByReceiverAndStatus(user, "PENDING").stream()
+                .map(this::mapConnectionRequestToDTO)
+                .collect(Collectors.toList());
     }
 
     private UserDTO mapUserToDTO(User user) {
@@ -84,6 +98,15 @@ public class ConnectionService {
                 .role(user.getRole().name())
                 .department(user.getDepartment())
                 .level(user.getLevel())
+                .build();
+    }
+
+    private ConnectionRequestDTO mapConnectionRequestToDTO(ConnectionRequest request) {
+        return ConnectionRequestDTO.builder()
+                .id(request.getId())
+                .sender(mapUserToDTO(request.getSender()))
+                .status(request.getStatus())
+                .timestamp(request.getTimestamp())
                 .build();
     }
 }

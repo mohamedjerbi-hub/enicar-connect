@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import tn.enicar.enicarconnect.model.AppGroup;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GroupRepository extends JpaRepository<AppGroup, Long> {
 
@@ -17,4 +18,6 @@ public interface GroupRepository extends JpaRepository<AppGroup, Long> {
 
     @Query("SELECT g FROM AppGroup g WHERE g.privacy = 'PUBLIC' ORDER BY g.createdAt DESC")
     List<AppGroup> findAllPublicGroups();
+
+    Optional<AppGroup> findByNameIgnoreCase(String name);
 }

@@ -5,7 +5,7 @@ export type Theme = 'dark' | 'light';
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
     private _theme = signal<Theme>(
-        (localStorage.getItem('enicar-theme') as Theme) || 'dark'
+        (localStorage.getItem('enicar-theme') as Theme) || 'light'
     );
 
     readonly theme = this._theme.asReadonly();

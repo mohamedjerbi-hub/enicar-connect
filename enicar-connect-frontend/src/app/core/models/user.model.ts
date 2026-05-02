@@ -13,6 +13,7 @@ export interface User {
     location: string;
     avatarColor: string;
     avatarBg: string;
+    skills?: string[];
     connections: number;
     groups: number;
     projects: number;
