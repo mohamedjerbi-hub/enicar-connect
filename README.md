@@ -91,12 +91,14 @@ Si vous utilisez le profil `postgres` :
 La base est pré-peuplée avec des données cohérentes (`DatabaseSeeder.java`). 
 **Mot de passe universel :** `enicarDemo2026!`
 
-| Rôle | Email | Scénario de Test |
-| :--- | :--- | :--- |
-| **Enseignant** | `faouzi.jaidi@enicar.ucar.tn` | Publication officielle, gestion des départements, validation. |
-| **Étudiant (Leader)** | `mohamed.jerbi@enicar.ucar.tn` | Interaction sur le feed, messagerie de groupe, gestion profil. |
-| **Étudiant (Infra)** | `mohamed.babou@enicar.ucar.tn` | Publication technique, interactions sociales. |
-| **Alumni** | `amine.khelifi@alumni.vermeg.tn` | Publication d'offres de stage/emploi, mentorat étudiant. |
+| Rôle | Nom | Email | Scénario de Test |
+| :--- | :--- | :--- | :--- |
+| **Direction** | Admin | `direction@enicar.ucar.tn` | Services administratifs, vue globale. |
+| **Enseignant** | Faouzi | `faouzi.jaidi@enicar.ucar.tn` | Publication officielle, gestion départements. |
+| **Étudiant (L)** | Jerbi | `mohamed.jerbi@enicar.ucar.tn` | Leader, Feed interactif, messagerie. |
+| **Étudiant (F)** | Babou | `mohamed.babou@enicar.ucar.tn` | Social Network, Feed, Messagerie STOMP. |
+| **Étudiant (P)** | Abidi | `mohamed-dhia.abidi@enicar.ucar.tn` | Réseau Pro, Mentorat, Offres d'emploi. |
+| **Alumni** | Vermeg | `amine.khelifi@alumni.vermeg.tn` | Recrutement, lien Etudiant-Alumni. |
 
 ---
 
