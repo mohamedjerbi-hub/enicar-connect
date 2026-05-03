@@ -45,30 +45,45 @@ Make sure you have the following installed to run the application natively:
 - **Node.js 20+**
 - **Docker 24+** (Required for production environments)
 
-### 1. Unified Local Development (H2 Memory Mode)
-The application compiles both the Javascript Frontend and the Java Backend automatically. The database will spin up locally in memory and populate itself with `seed-data.json`.
+### 1. Unified Local Development
+The application compiles both the Javascript Frontend and the Java Backend automatically.
 
 ```bash
 # 1. Ask Maven to install Node, build the Angular Prod artifacts, and package the Spring JAR
 .\mvnw.cmd clean install -DskipTests
 
-# 2. Boot the Unified Application
+# 2. Boot the Unified Application (Default: H2 Memory Mode)
 .\mvnw.cmd spring-boot:run
+
+# 3. Boot with PostgreSQL (Requires Docker for DB)
+.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
 > 📍 **App lives at**: `http://localhost:8081`
 
 *Note: For granular Frontend UI (Hot-Reloading), enter `src/main/frontend` and execute `npm start` (Runs on Port 4200).*
 
-### 2. Production Docker Deployment (PostgreSQL Mode)
+### 2. Production Docker Deployment
 ENICAR Connect is built for immediate CI/CD staging. A single command handles pulling PostgreSQL, triggering the Flyway schema migrations, and serving the optimized JAR.
 
 ```bash
-# Set up secure environment secrets
-cp .env.example .env
-
 # Spin up the containers in detached mode
 docker-compose up --build -d
 ```
+
+---
+
+## 🔑 Demo & Test Accounts
+The database is pre-populated with a set of consistent test data (see `src/main/java/.../config/DatabaseSeeder.java`).
+
+**Master Password:** `enicarDemo2026!`
+
+| Role | Email |
+| :--- | :--- |
+| **Teacher** | `faouzi.jaidi@enicar.ucar.tn` |
+| **Student** | `mohamed.jerbi@enicar.ucar.tn` |
+| **Student** | `mohamed.babou@enicar.ucar.tn` |
+| **Alumni** | `amine.khelifi@alumni.vermeg.tn` |
+
 
 ---
 

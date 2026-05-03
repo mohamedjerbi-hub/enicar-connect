@@ -32,10 +32,9 @@ src/main/frontend/node/
 src/main/frontend/coverage/
 src/main/frontend/.sass-cache/
 
-# Anciens dossiers parallèles (si encore présents localement)
-enicar-connect-backend/target/
-enicar-connect-frontend/node_modules/
-enicar-connect-frontend/dist/
+# Anciens dossiers parallèles
+enicar-connect-backend/
+enicar-connect-frontend/
 
 # ─── Fichiers temporaires / backup ───────────────────
 *.bak
@@ -44,3 +43,4 @@ enicar-connect-frontend/dist/
 
 # Divers
 requirements.txt
+scripts/
