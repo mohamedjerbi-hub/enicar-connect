@@ -81,7 +81,7 @@ class GroupServiceTest {
 
         assertThat(dto.getName()).isEqualTo("Projet Lab");
         assertThat(dto.isJoined()).isTrue();
-        assertThat(dto.getIsOwner()).isTrue();
+        assertThat(dto.isOwner()).isTrue();
 
         ArgumentCaptor<GroupMember> captor = ArgumentCaptor.forClass(GroupMember.class);
         verify(memberRepo).save(captor.capture());

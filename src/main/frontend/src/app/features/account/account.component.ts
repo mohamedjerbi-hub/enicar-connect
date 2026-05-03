@@ -62,12 +62,8 @@ export class AccountComponent {
       .split(',')
       .map(s => s.trim())
       .filter(Boolean);
-    const ok = await this.accountSvc.update({ ...this.editUser });
-    if (ok) {
-      this.toast.show('fas fa-check-circle', 'Informations mises à jour !');
-    } else {
-      this.toast.show('fas fa-exclamation-circle', 'Échec de mise à jour du profil.');
-    }
+    await this.accountSvc.update({ ...this.editUser });
+    this.toast.show('fas fa-check-circle', 'Informations mises à jour !');
   }
 
   async saveNotifications(): Promise<void> {

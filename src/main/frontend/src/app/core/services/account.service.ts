@@ -39,6 +39,7 @@ export class AccountService {
             role: (u.role as string).toLowerCase() as UserAccount['role'],
             department: (u as any).department ?? '',
             level: (u as any).level ?? '',
+            skills: Array.isArray((u as any).skills) ? (u as any).skills : [],
             notifications: { ...DEFAULT_NOTIFICATIONS },
             privacy: { ...DEFAULT_PRIVACY }
         };
