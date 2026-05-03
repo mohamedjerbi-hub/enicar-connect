@@ -72,18 +72,31 @@ docker-compose up --build -d
 
 ---
 
-## 🔑 Demo & Test Accounts
-The database is pre-populated with a set of consistent test data (see `src/main/java/.../config/DatabaseSeeder.java`).
+## 🔍 Exploration & Debugging (Database)
 
-**Master Password:** `enicarDemo2026!`
+### 1. Mode H2 (Développement Local Rapide)
+Si vous lancez l'application sans profil particulier (H2 par défaut), la base est un fichier local `./database`.
+- **Console H2** : `http://localhost:8081/h2-console`
+- **JDBC URL** : `jdbc:h2:file:./database`
+- **User** : `sa` | **Password** : *(vide)*
 
-| Role | Email |
-| :--- | :--- |
-| **Teacher** | `faouzi.jaidi@enicar.ucar.tn` |
-| **Student** | `mohamed.jerbi@enicar.ucar.tn` |
-| **Student** | `mohamed.babou@enicar.ucar.tn` |
-| **Alumni** | `amine.khelifi@alumni.vermeg.tn` |
+### 2. Mode PostgreSQL (Docker / Soutenance)
+Si vous utilisez le profil `postgres` :
+- **Accès DB** : Utilisez un client (pgAdmin, Dbeaver) sur `localhost:5432`.
+- **Identifiants** : User: `enicar` | Password: `enicar2026` | DB: `enicar_db`.
 
+---
+
+## 🔑 Scénarios de Test & Comptes Démo
+La base est pré-peuplée avec des données cohérentes (`DatabaseSeeder.java`). 
+**Mot de passe universel :** `enicarDemo2026!`
+
+| Rôle | Email | Scénario de Test |
+| :--- | :--- | :--- |
+| **Enseignant** | `faouzi.jaidi@enicar.ucar.tn` | Publication officielle, gestion des départements, validation. |
+| **Étudiant (Leader)** | `mohamed.jerbi@enicar.ucar.tn` | Interaction sur le feed, messagerie de groupe, gestion profil. |
+| **Étudiant (Infra)** | `mohamed.babou@enicar.ucar.tn` | Publication technique, interactions sociales. |
+| **Alumni** | `amine.khelifi@alumni.vermeg.tn` | Publication d'offres de stage/emploi, mentorat étudiant. |
 
 ---
 
