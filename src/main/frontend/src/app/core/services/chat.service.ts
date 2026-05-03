@@ -21,7 +21,7 @@ export class ChatService {
 
     // ID mocké de l'utilisateur connecté (pour la démonstration).
     // À remplacer dynamiquement par "auth.service.getCurrentUserId()"
-    public myId = 1;
+    public myId: number | null = null;
 
     private _messages = new BehaviorSubject<ChatMessage[]>([]);
     public messages$ = this._messages.asObservable();
@@ -32,22 +32,28 @@ export class ChatService {
             // mais comme @stomp/stompjs le supporte bien, on injecte SockJS ou l'URL WebSocket vanilla
             brokerURL: 'ws://localhost:8081/ws',
             // webSocketFactory: () => new SockJS('http://localhost:8081/ws'), // Décommentez si vous utilisez .withSockJS() en backend
-            debug: (msg: string) => console.log('STOMP: ' + msg),
+            debug: () => {
+                /* STOMP debug désactivé en livrable (pas de console.log) */
+            },
             reconnectDelay: 2000,
         });
 
-        this.stompClient.onConnect = (frame) => {
-            console.log('✅ Connecté au WebSocket !', frame);
-
+        this.stompClient.onConnect = () => {
             // S'abonner à SA propre file d'attente de messages personnels
+            if (this.myId == null) return;
             this.stompClient.subscribe(`/user/${this.myId}/queue/messages`, (message: IMessage) => {
                 const newMessage: ChatMessage = JSON.parse(message.body);
                 // Ajouter le nouveau message à l'UI
                 this._messages.next([...this._messages.value, newMessage]);
             });
         };
+    }
 
-        this.stompClient.activate();
+    public setCurrentUserId(userId: number): void {
+        this.myId = userId;
+        if (!this.stompClient.active) {
+            this.stompClient.activate();
+        }
     }
 
     public getConversation(partnerId: number): void {
@@ -62,6 +68,7 @@ export class ChatService {
     }
 
     public sendMessage(recipientId: number, content: string): void {
+        if (this.myId == null) return;
         const msg: ChatMessage = {
             senderId: this.myId,
             recipientId: recipientId,

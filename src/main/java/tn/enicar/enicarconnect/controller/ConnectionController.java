@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import tn.enicar.enicarconnect.dto.ConnectionRequestDTO;
 import tn.enicar.enicarconnect.dto.UserDTO;
 import tn.enicar.enicarconnect.model.User;
 import tn.enicar.enicarconnect.service.ConnectionService;
@@ -49,7 +50,7 @@ public class ConnectionController {
     }
 
     @GetMapping("/requests")
-    public ResponseEntity<?> getPendingRequests(@AuthenticationPrincipal User currentUser) {
+    public ResponseEntity<List<ConnectionRequestDTO>> getPendingRequests(@AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(connectionService.getPendingRequests(currentUser.getId()));
     }
 }

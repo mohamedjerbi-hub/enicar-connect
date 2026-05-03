@@ -3,6 +3,7 @@ package tn.enicar.enicarconnect.dto;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ public class JobDTO {
     private String type;
     private String description;
     private List<String> tags;
+    private Set<String> requiredSkills;
     private String posted; // Date relative string like "Il y a 2 jours"
 
     // Calculated boolean fields for the current user

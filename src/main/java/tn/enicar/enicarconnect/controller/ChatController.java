@@ -1,6 +1,7 @@
 package tn.enicar.enicarconnect.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ChatController {
@@ -29,6 +31,10 @@ public class ChatController {
      */
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
+        log.info("Chat message received: senderId={} recipientId={} contentLength={}",
+                chatMessage.getSenderId(),
+                chatMessage.getRecipientId(),
+                chatMessage.getContent() != null ? chatMessage.getContent().length() : 0);
         // Le timestamp est set automatiquement par @CreationTimestamp au moment de la
         // sauvegarde
         // Mais pour informer le Front-End en vrai Temps-Réel, on génère une date
@@ -38,6 +44,7 @@ public class ChatController {
 
         // Sauvegarde de l'historique
         ChatMessage savedMsg = chatMessageRepository.save(chatMessage);
+        log.info("Chat message saved: messageId={}", savedMsg.getId());
 
         // Envoi au destinataire via son canal privé (abonné à
         // /user/{id}/queue/messages)
@@ -45,6 +52,7 @@ public class ChatController {
                 String.valueOf(chatMessage.getRecipientId()),
                 "/queue/messages",
                 savedMsg);
+        log.info("Chat message dispatched: messageId={} toUser={}", savedMsg.getId(), chatMessage.getRecipientId());
     }
 
     /**

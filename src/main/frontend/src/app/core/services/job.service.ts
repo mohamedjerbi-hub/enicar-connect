@@ -4,6 +4,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Job } from '../models/job.model';
 import { tap } from 'rxjs/operators';
 
+interface MatchingResult {
+    jobOfferId: number;
+    matchedSkills: string[];
+    compatibilityScore: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class JobService {
     private readonly API = 'http://localhost:8081/api/jobs';
@@ -18,7 +24,10 @@ export class JobService {
 
     private loadJobs(): void {
         this.http.get<Job[]>(this.API).subscribe({
-            next: (jobs) => this._jobs.next(jobs),
+            next: (jobs) => {
+                this._jobs.next(jobs);
+                this.refreshMatchingScores();
+            },
             error: (err) => {
                 console.error('Erreur lors du chargement des offres', err);
                 this._jobs.next([]);
@@ -31,16 +40,26 @@ export class JobService {
     }
 
     add(job: Omit<Job, 'id' | 'applied' | 'posted' | 'isOwner'>): void {
-        this.http.post<Job>(this.API, job).pipe(
-            tap(newJob => this._jobs.next([newJob, ...this._jobs.value]))
+        this.http.post<Job>(this.API, {
+            ...job,
+            requiredSkills: job.requiredSkills ?? job.tags
+        }).pipe(
+            tap(newJob => {
+                this._jobs.next([newJob, ...this._jobs.value]);
+                this.refreshMatchingScores();
+            })
         ).subscribe();
     }
 
     update(id: number, changes: Partial<Job>): void {
-        this.http.put<Job>(`${this.API}/${id}`, changes).pipe(
+        this.http.put<Job>(`${this.API}/${id}`, {
+            ...changes,
+            requiredSkills: changes.requiredSkills ?? changes.tags
+        }).pipe(
             tap(updatedJob => {
                 const currentJobs = this._jobs.value.map(j => j.id === id ? updatedJob : j);
                 this._jobs.next(currentJobs);
+                this.refreshMatchingScores();
             })
         ).subscribe();
     }
@@ -61,5 +80,26 @@ export class JobService {
                 this._jobs.next(currentJobs);
             })
         ).subscribe();
+    }
+
+    private refreshMatchingScores(): void {
+        this.http.get<MatchingResult[]>('http://localhost:8081/api/matching/jobs').subscribe({
+            next: matches => {
+                const byJobId = new Map(matches.map(m => [m.jobOfferId, m]));
+                const merged = this._jobs.value.map(job => {
+                    const match = byJobId.get(job.id);
+                    if (!match) return { ...job, compatibilityScore: undefined, matchedSkills: [] };
+                    return {
+                        ...job,
+                        compatibilityScore: Math.round(match.compatibilityScore),
+                        matchedSkills: match.matchedSkills ?? []
+                    };
+                });
+                this._jobs.next(merged);
+            },
+            error: () => {
+                // Matching is an enhancement; keep jobs visible even if endpoint fails.
+            }
+        });
     }
 }

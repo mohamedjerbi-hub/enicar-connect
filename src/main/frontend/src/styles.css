@@ -9,27 +9,45 @@
 /* ── Font Awesome ─── */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
-/* ── Design Tokens — Dark (default) ─── */
+/* ── Design Tokens — Dark ─── */
 :root {
-    --gold: #C9A84C;
-    --gold-light: #E8C96A;
-    --bg: #050D1A;
-    --bg-card: #0D1F3C;
-    --bg-inner: rgba(255, 255, 255, .045);
-    --navy-nav: #0A1628;
+    /* Brand (primary) */
+    --gold: #2563EB;          /* primary blue */
+    --gold-light: #60A5FA;    /* soft blue */
+
+    /* Surfaces */
+    --bg: #050B17;
+    --bg-card: #0B1833;
+    --bg-inner: rgba(255, 255, 255, .05);
+    --navy-nav: rgba(11, 24, 51, .72);
+
+    /* Text */
     --text: #FFFFFF;
+    --text-1: var(--text);
     --text-2: rgba(255, 255, 255, .72);
     --text-3: rgba(255, 255, 255, .40);
-    --border: rgba(201, 168, 76, .15);
-    --search-bg: rgba(255, 255, 255, .06);
-    --shadow: 0 8px 32px rgba(0, 0, 0, .4);
+
+    /* Borders / shadows */
+    --border: rgba(96, 165, 250, .18);
+    --search-bg: rgba(255, 255, 255, .07);
+    --shadow: 0 18px 60px rgba(0, 0, 0, .45);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, .45);
+    --shadow-xl: 0 24px 80px rgba(0, 0, 0, .55);
+    --gold-glow: rgba(37, 99, 235, .45);
+
+    /* Layout */
     --nav-h: 68px;
+
+    /* Premium feel */
+    --radius: 18px;
+    --radius-sm: 12px;
+    --ring: 0 0 0 4px rgba(37, 99, 235, .16);
 
     /* Roles */
     --role-student: #6366f1;
     --role-student-bg: rgba(99, 102, 241, .12);
-    --role-prof: #C9A84C;
-    --role-prof-bg: rgba(201, 168, 76, .14);
+    --role-prof: #60A5FA;
+    --role-prof-bg: rgba(96, 165, 250, .14);
     --role-admin: #f43f5e;
     --role-admin-bg: rgba(244, 63, 94, .13);
     --role-alumni: #10b981;
@@ -38,18 +56,28 @@
     --role-direction-bg: rgba(168, 85, 247, .13);
 }
 
-/* ── Design Tokens — Light ─── */
+/* ── Design Tokens — Light (Premium Blue/White) ─── */
 [data-theme="light"] {
-    --bg: #F5F7FA;
+    --gold: #2563EB;
+    --gold-light: #1D4ED8;
+
+    --bg: #F7FAFF;
     --bg-card: #FFFFFF;
-    --bg-inner: rgba(0, 0, 0, .05);
-    --navy-nav: #FFFFFF;
+    --bg-inner: rgba(37, 99, 235, .06);
+    --navy-nav: rgba(255, 255, 255, .72);
+
     --text: #111827;
+    --text-1: var(--text);
     --text-2: #374151;
     --text-3: #9CA3AF;
-    --border: rgba(0, 0, 0, .09);
-    --search-bg: rgba(0, 0, 0, .05);
-    --shadow: 0 2px 12px rgba(0, 0, 0, .07);
+
+    --border: rgba(15, 23, 42, .10);
+    --search-bg: rgba(15, 23, 42, .04);
+    --shadow: 0 18px 60px rgba(15, 23, 42, .08);
+    --shadow-lg: 0 12px 40px rgba(15, 23, 42, .10);
+    --shadow-xl: 0 24px 80px rgba(15, 23, 42, .12);
+    --gold-glow: rgba(37, 99, 235, .28);
+    --ring: 0 0 0 4px rgba(37, 99, 235, .18);
 }
 
 /* ── Reset ─── */
@@ -65,7 +93,9 @@ html,
 body {
     height: 100%;
     font-family: 'Inter', sans-serif;
-    background: var(--bg);
+    background: radial-gradient(1000px 500px at 20% -10%, rgba(37, 99, 235, .18), transparent 60%),
+        radial-gradient(900px 450px at 85% 0%, rgba(96, 165, 250, .14), transparent 55%),
+        var(--bg);
     color: var(--text);
     overflow-x: hidden;
     transition: background .4s, color .4s;
@@ -129,7 +159,7 @@ img {
 .role-badge.prof {
     background: var(--role-prof-bg);
     color: var(--role-prof);
-    border: 1px solid rgba(201, 168, 76, .3);
+    border: 1px solid rgba(96, 165, 250, .28);
 }
 
 .role-badge.admin {
@@ -144,12 +174,12 @@ img {
     border: 1px solid rgba(16, 185, 129, .25);
 }
 
-/* teacher is an alias for prof (same gold style) */
+/* teacher is an alias for prof (same blue style) */
 .role-badge.prof,
 .role-badge.teacher {
     background: var(--role-prof-bg);
     color: var(--role-prof);
-    border: 1px solid rgba(201, 168, 76, .3);
+    border: 1px solid rgba(96, 165, 250, .28);
 }
 
 /* admin_staff uses admin CSS (same red style) */
@@ -170,10 +200,85 @@ img {
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: background .4s, border-color .4s;
+}
+
+/* ── Premium controls (shared) ─── */
+input,
+textarea,
+select {
+    border-radius: var(--radius-sm);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    box-shadow: var(--ring);
+    border-color: var(--gold);
+}
+
+.btn {
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: .72rem 1.05rem;
+    font-weight: 650;
+    letter-spacing: .1px;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: white;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, .22);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 14px 38px rgba(37, 99, 235, .28);
+}
+
+.btn-outline {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.btn-outline:hover {
+    border-color: rgba(37, 99, 235, .35);
+    background: var(--bg-inner);
+}
+
+.btn-danger {
+    background: rgba(244, 63, 94, .12);
+    border-color: rgba(244, 63, 94, .25);
+    color: #f43f5e;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .55);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal {
+    width: min(720px, calc(100vw - 2rem));
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+    box-shadow: var(--shadow-xl);
 }
 
 /* ── Keyframes ─── */
@@ -195,11 +300,11 @@ img {
 
     0%,
     100% {
-        box-shadow: 0 0 0 0 rgba(201, 168, 76, .4);
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, .32);
     }
 
     50% {
-        box-shadow: 0 0 0 10px rgba(201, 168, 76, 0);
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
     }
 }
 
@@ -298,3 +403,4 @@ img {
         transform: translateX(0);
     }
 }
+

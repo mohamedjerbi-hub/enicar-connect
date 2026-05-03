@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import tn.enicar.enicarconnect.model.*;
 import tn.enicar.enicarconnect.repository.*;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
+@Profile("!postgres")
 @RequiredArgsConstructor
 @Slf4j
 public class DataInitializer implements CommandLineRunner {

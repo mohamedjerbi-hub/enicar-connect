@@ -18,7 +18,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy built Angular app
-COPY --from=builder /app/dist/enicar-connect-frontend/browser ./
+COPY --from=builder /app/dist/enicar-connect/browser ./
 
 # nginx config: SPA routing + API proxy
 COPY nginx.conf /etc/nginx/conf.d/default.conf

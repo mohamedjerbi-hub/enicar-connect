@@ -28,8 +28,13 @@ export class PostService {
 
     // ─── Create ──────────────────────────────────────────
 
-    createPost(body: string, visibility = 'PUBLIC'): void {
-        this.http.post<Post>(`${this.API}/posts`, { body, visibility }).subscribe({
+    createPost(body: string, visibility = 'PUBLIC', groupId?: number): void {
+        const payload: any = { body, visibility };
+        if (groupId) {
+            payload.groupId = groupId;
+            payload.visibility = 'GROUP';
+        }
+        this.http.post<Post>(`${this.API}/posts`, payload).subscribe({
             next: post => {
                 this._posts.next([{ ...post, commentsOpen: false }, ...this._posts.value]);
             }

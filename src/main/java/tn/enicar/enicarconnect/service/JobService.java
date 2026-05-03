@@ -1,7 +1,9 @@
 package tn.enicar.enicarconnect.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.enicar.enicarconnect.dto.JobDTO;
 import tn.enicar.enicarconnect.model.JobApplication;
 import tn.enicar.enicarconnect.model.JobOffer;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class JobService {
 
@@ -24,24 +27,29 @@ public class JobService {
     private final JobApplicationRepository jobApplicationRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public List<JobDTO> getAllJobs(Long currentUserId) {
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        log.info("Loading jobs for userId={}", currentUserId);
         return jobOfferRepository.findAllByOrderByCreatedAtDesc().stream()
                 .map(job -> mapToDTO(job, currentUser))
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public JobDTO createJob(JobOffer jobData, Long currentUserId) {
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         jobData.setAuthor(currentUser);
         JobOffer saved = jobOfferRepository.save(jobData);
+        log.info("Job created: jobId={} authorId={}", saved.getId(), currentUserId);
         return mapToDTO(saved, currentUser);
     }
 
+    @Transactional
     public JobDTO updateJob(Long id, JobOffer updatedData, Long currentUserId) {
         JobOffer job = jobOfferRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job offer not found"));
@@ -58,11 +66,17 @@ public class JobService {
         job.setType(updatedData.getType());
         job.setDescription(updatedData.getDescription());
         job.setTags(updatedData.getTags());
+        if (updatedData.getRequiredSkills() != null) {
+            job.getRequiredSkills().clear();
+            job.getRequiredSkills().addAll(updatedData.getRequiredSkills());
+        }
 
         JobOffer saved = jobOfferRepository.save(job);
+        log.info("Job updated: jobId={} userId={}", id, currentUserId);
         return mapToDTO(saved, currentUser);
     }
 
+    @Transactional
     public void deleteJob(Long id, Long currentUserId) {
         JobOffer job = jobOfferRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job offer not found"));
@@ -72,8 +86,10 @@ public class JobService {
         }
 
         jobOfferRepository.delete(job);
+        log.info("Job deleted: jobId={} userId={}", id, currentUserId);
     }
 
+    @Transactional
     public void applyToJob(Long jobId, Long currentUserId) {
         JobOffer job = jobOfferRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job offer not found"));
@@ -96,6 +112,7 @@ public class JobService {
                 .status("PENDING")
                 .build();
         jobApplicationRepository.save(application);
+        log.info("Job application created: jobId={} applicantId={}", jobId, currentUserId);
     }
 
     private JobDTO mapToDTO(JobOffer job, User currentUser) {
@@ -114,6 +131,7 @@ public class JobService {
                 .type(job.getType())
                 .description(job.getDescription())
                 .tags(tagsList)
+                .requiredSkills(job.getRequiredSkills())
                 .posted(getRelativeTime(job.getCreatedAt()))
                 .applied(isApplied)
                 .isOwner(isOwner)

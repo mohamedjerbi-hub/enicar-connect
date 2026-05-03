@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "post_likes", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "post_id", "user_id" })
 })
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

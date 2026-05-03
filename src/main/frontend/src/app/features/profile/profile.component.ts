@@ -30,15 +30,23 @@ export class ProfileComponent {
     { name: 'network-scanner', vis: 'Public', description: 'Scanner réseau avec graphe topologie.', lang: 'Python', langColor: '#3572A5', stars: 7 },
   ];
 
-  skills = [
-    { name: 'Angular / TypeScript', pct: 88 },
-    { name: 'Spring Boot / Java', pct: 80 },
-    { name: 'Cybersécurité', pct: 70 },
-    { name: 'Docker / CI-CD', pct: 65 },
-    { name: 'UI / UX Design', pct: 75 },
-  ];
+  get skills() {
+    const userSkills = this.auth.currentUser()?.skills ?? [];
+    if (!userSkills.length) {
+      return [
+        { name: 'Angular / TypeScript', pct: 88 },
+        { name: 'Spring Boot / Java', pct: 80 },
+        { name: 'Cybersécurité', pct: 70 },
+      ];
+    }
+    return userSkills.map((name, index) => ({ name, pct: Math.max(50, 90 - index * 7) }));
+  }
 
-  tags = ['Python', 'JavaScript', 'Java', 'C', 'SQL', 'Bash'];
+  get tags() {
+    return this.auth.currentUser()?.skills?.length
+      ? this.auth.currentUser()!.skills!
+      : ['Python', 'JavaScript', 'Java', 'C', 'SQL', 'Bash'];
+  }
 
   education = [
     { icon: 'fas fa-graduation-cap', degree: 'Génie Informatique', school: 'ENI Carthage', period: '2023–2026 (en cours)' },

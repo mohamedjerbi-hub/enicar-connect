@@ -13,6 +13,7 @@ export interface UserAccount {
     role: 'student' | 'teacher' | 'admin_staff' | 'direction' | 'alumni';
     department: string;
     level: string;
+    skills: string[];
     notifications: NotificationPrefs;
     privacy: PrivacyPrefs;
 }

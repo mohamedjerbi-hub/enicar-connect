@@ -26,6 +26,7 @@ export interface Post {
     authorRole: string;
     authorAvatarColor: string;
     authorAvatarBg: string;
+    groupId?: number | null;
     body: string;
     visibility: string;
     hashtags: string[];

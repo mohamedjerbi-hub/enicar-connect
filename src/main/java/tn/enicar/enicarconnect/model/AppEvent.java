@@ -10,8 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "events")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -1,6 +1,7 @@
 package tn.enicar.enicarconnect.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tn.enicar.enicarconnect.dto.CreateGroupRequest;
@@ -14,12 +15,47 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class GroupService {
 
     private final GroupRepository groupRepo;
     private final GroupMemberRepository memberRepo;
     private final UserRepository userRepo;
+
+    @Transactional
+    public AppGroup ensureDefaultGroup(String name, String description, User creator) {
+        return groupRepo.findByNameIgnoreCase(name).orElseGet(() -> {
+            AppGroup created = AppGroup.builder()
+                    .name(name)
+                    .description(description)
+                    .groupType(GroupType.THEMATIC)
+                    .kind(GroupKind.DEFAULT)
+                    .privacy(GroupPrivacy.PRIVATE)
+                    .icon("fas fa-users")
+                    .iconColor("var(--gold)")
+                    .bannerGradient("linear-gradient(135deg,#0A1628,#1a3060)")
+                    .creator(creator)
+                    .build();
+
+            AppGroup saved = groupRepo.save(created);
+            log.info("Default group created: groupId={} name={}", saved.getId(), saved.getName());
+            return saved;
+        });
+    }
+
+    @Transactional
+    public void addUserToGroup(AppGroup group, User user, MemberRole role) {
+        if (memberRepo.existsByGroupAndUser(group, user)) {
+            return;
+        }
+        memberRepo.save(GroupMember.builder()
+                .group(group)
+                .user(user)
+                .memberRole(role)
+                .build());
+        log.info("User added to group: userId={} groupId={} memberRole={}", user.getId(), group.getId(), role);
+    }
 
     @Transactional
     public GroupDTO createGroup(Long userId, CreateGroupRequest req) {

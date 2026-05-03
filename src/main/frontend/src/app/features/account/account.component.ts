@@ -30,6 +30,7 @@ export class AccountComponent {
     notifications: { ...this.accountSvc.current.notifications },
     privacy: { ...this.accountSvc.current.privacy }
   };
+  skillsInput = this.editUser.skills.join(', ');
 
   pwd = { old: '', new: '', confirm: '' };
 
@@ -56,18 +57,26 @@ export class AccountComponent {
     return ({ student: 'Étudiant', teacher: 'Enseignant', admin_staff: 'Administration', direction: 'Direction', alumni: 'Alumni' } as Record<string, string>)[r] ?? r;
   }
 
-  saveInfo(): void {
-    this.accountSvc.update({ ...this.editUser });
-    this.toast.show('fas fa-check-circle', 'Informations mises à jour !');
+  async saveInfo(): Promise<void> {
+    this.editUser.skills = this.skillsInput
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
+    const ok = await this.accountSvc.update({ ...this.editUser });
+    if (ok) {
+      this.toast.show('fas fa-check-circle', 'Informations mises à jour !');
+    } else {
+      this.toast.show('fas fa-exclamation-circle', 'Échec de mise à jour du profil.');
+    }
   }
 
-  saveNotifications(): void {
-    this.accountSvc.update({ notifications: { ...this.editUser.notifications } });
+  async saveNotifications(): Promise<void> {
+    await this.accountSvc.update({ notifications: { ...this.editUser.notifications } });
     this.toast.show('fas fa-bell', 'Préférences de notification enregistrées !');
   }
 
-  savePrivacy(): void {
-    this.accountSvc.update({ privacy: { ...this.editUser.privacy } });
+  async savePrivacy(): Promise<void> {
+    await this.accountSvc.update({ privacy: { ...this.editUser.privacy } });
     this.toast.show('fas fa-shield-alt', 'Paramètres de confidentialité enregistrés !');
   }
 

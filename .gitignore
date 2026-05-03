@@ -1,31 +1,46 @@
-# Enicar Connect Global Ignore
+# ─── IDE & OS ─────────────────────────────────────────
 .idea/
 .vscode/
 *.iml
 *.log
 .DS_Store
+Thumbs.db
 .tools/
-requirements.txt
 
-# Env variables
+# ─── Secrets ──────────────────────────────────────────
 .env
+.env.local
 
-# Backend Ignores
+# ─── Monolithe Maven (racine) ─────────────────────────
+target/
+*.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
+
+# Bases H2 locales (dev)
+*.mv.db
+*.trace.db
+database/
+
+# ─── Angular (src/main/frontend) ─────────────────────
+src/main/frontend/node_modules/
+src/main/frontend/dist/
+src/main/frontend/tmp/
+src/main/frontend/out-tsc/
+src/main/frontend/.angular/
+src/main/frontend/node/
+src/main/frontend/coverage/
+src/main/frontend/.sass-cache/
+
+# Anciens dossiers parallèles (si encore présents localement)
 enicar-connect-backend/target/
-enicar-connect-backend/*.jar
-enicar-connect-backend/*.war
-enicar-connect-backend/.mvn/
-enicar-connect-backend/mvnw
-enicar-connect-backend/mvnw.cmd
-enicar-connect-backend/database.mv.db
-enicar-connect-backend/database.trace.db
-
-# Frontend Ignores
 enicar-connect-frontend/node_modules/
 enicar-connect-frontend/dist/
-enicar-connect-frontend/tmp/
-enicar-connect-frontend/out-tsc/
-enicar-connect-frontend/bazel-out/
-enicar-connect-frontend/.pnp
-enicar-connect-frontend/.pnp.js
-enicar-connect-frontend/.angular/
+
+# ─── Fichiers temporaires / backup ───────────────────
+*.bak
+*.swp
+*~
+
+# Divers
+requirements.txt

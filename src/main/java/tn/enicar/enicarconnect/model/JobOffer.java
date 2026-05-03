@@ -6,11 +6,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "job_offers")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -37,6 +38,12 @@ public class JobOffer {
 
     @Column(columnDefinition = "TEXT")
     private String tags; // Comma separated
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "job_offer_required_skills", joinColumns = @JoinColumn(name = "job_offer_id"))
+    @Column(name = "required_skill", nullable = false)
+    private Set<String> requiredSkills = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)

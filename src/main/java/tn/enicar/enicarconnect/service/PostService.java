@@ -1,6 +1,7 @@
 package tn.enicar.enicarconnect.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tn.enicar.enicarconnect.dto.*;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostService {
 
@@ -48,6 +50,7 @@ public class PostService {
         }
 
         post = postRepo.save(post);
+        log.info("Post created: postId={} authorId={} visibility={}", post.getId(), userId, post.getVisibility());
         return toDTO(post, userId);
     }
 
@@ -55,16 +58,18 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostDTO> getAllPosts(Long currentUserId) {
-        return postRepo.findAllPublicPosts().stream()
-                .map(p -> toDTO(p, currentUserId))
+        User currentUser = currentUserId != null ? userRepo.findById(currentUserId).orElse(null) : null;
+        return postRepo.findAllPublicPostsWithDetails().stream()
+                .map(p -> toDTO(p, currentUser))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public PostDTO getPost(Long postId, Long currentUserId) {
+        User currentUser = currentUserId != null ? userRepo.findById(currentUserId).orElse(null) : null;
         Post post = postRepo.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Publication introuvable"));
-        return toDTO(post, currentUserId);
+        return toDTO(post, currentUser);
     }
 
     // ─── UPDATE ───────────────────────────────────────────
@@ -87,6 +92,7 @@ public class PostService {
         }
 
         post = postRepo.save(post);
+        log.info("Post updated: postId={} userId={}", postId, userId);
         return toDTO(post, userId);
     }
 
@@ -102,6 +108,7 @@ public class PostService {
         }
 
         postRepo.delete(post);
+        log.info("Post deleted: postId={} by userId={} adminAction={}", postId, userId, isAdmin);
     }
 
     // ─── LIKE / UNLIKE ───────────────────────────────────
@@ -116,11 +123,14 @@ public class PostService {
         Optional<PostLike> existing = likeRepo.findByPostAndUser(post, user);
         if (existing.isPresent()) {
             likeRepo.delete(existing.get());
+            log.info("Post unliked: postId={} userId={}", postId, userId);
         } else {
             likeRepo.save(PostLike.builder().post(post).user(user).build());
+            log.info("Post liked: postId={} userId={}", postId, userId);
         }
 
-        return toDTO(postRepo.findById(postId).get(), userId);
+        return toDTO(postRepo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Publication introuvable")), user);
     }
 
     // ─── COMMENTS ─────────────────────────────────────────
@@ -139,6 +149,7 @@ public class PostService {
                 .build();
 
         comment = commentRepo.save(comment);
+        log.info("Comment added: commentId={} postId={} userId={}", comment.getId(), postId, userId);
         return toCommentDTO(comment);
     }
 
@@ -152,6 +163,7 @@ public class PostService {
         }
 
         commentRepo.delete(comment);
+        log.info("Comment deleted: commentId={} by userId={} adminAction={}", commentId, userId, isAdmin);
     }
 
     // ─── REPORTING ────────────────────────────────────────
@@ -170,12 +182,14 @@ public class PostService {
                 .build();
 
         reportRepo.save(report);
+        log.info("Post reported: postId={} by userId={}", postId, userId);
     }
 
     @Transactional(readOnly = true)
     public List<PostDTO> getReportedPosts(Long currentUserId) {
-        return postRepo.findReportedPosts().stream()
-                .map(p -> toDTO(p, currentUserId))
+        User currentUser = currentUserId != null ? userRepo.findById(currentUserId).orElse(null) : null;
+        return postRepo.findReportedPostsWithDetails().stream()
+                .map(p -> toDTO(p, currentUser))
                 .collect(Collectors.toList());
     }
 
@@ -192,14 +206,19 @@ public class PostService {
         }
 
         post = postRepo.save(post);
+        log.info("Post moderated: postId={} action={} moderatorId={}", postId, action, currentUserId);
         return toDTO(post, currentUserId);
     }
 
     // ─── MAPPING ──────────────────────────────────────────
 
     private PostDTO toDTO(Post post, Long currentUserId) {
-        User author = post.getAuthor();
         User currentUser = currentUserId != null ? userRepo.findById(currentUserId).orElse(null) : null;
+        return toDTO(post, currentUser);
+    }
+
+    private PostDTO toDTO(Post post, User currentUser) {
+        User author = post.getAuthor();
 
         boolean liked = currentUser != null && likeRepo.existsByPostAndUser(post, currentUser);
 

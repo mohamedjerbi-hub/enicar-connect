@@ -6,6 +6,8 @@ import { GroupService } from '../../../core/services/group.service';
 import { Group } from '../../../core/models/group.model';
 import { PostService } from '../../../core/services/post.service';
 import { Post } from '../../../core/models/post.model';
+import { GroupMessageService } from '../../../core/services/group-message.service';
+import { GroupMessage } from '../../../core/models/group-message.model';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 import { ParticlesBgComponent } from '../../../shared/particles-bg/particles-bg.component';
 import { RoleBadgeComponent } from '../../../shared/role-badge/role-badge.component';
@@ -21,24 +23,77 @@ export class GroupDetailComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private groupSvc = inject(GroupService);
     private postSvc = inject(PostService);
+    private groupMsgSvc = inject(GroupMessageService);
 
     group: Group | null = null;
     posts: Post[] = [];
-    activeTab = 'feed'; // feed, members, resources, events
+    activeTab = 'feed'; // feed, messages, members, resources, events
     composerText = '';
+    messages: GroupMessage[] = [];
+    messageText = '';
+    loadingMessages = false;
 
     ngOnInit(): void {
         const id = this.route.snapshot.params['id'];
         this.groupSvc.getAll().subscribe(groups => {
             this.group = groups.find(g => g.id === +id) || null;
         });
-        // For now, GroupFeed is just a filter on all posts or a separate service
-        // In real app, we fetch from /api/posts?groupId=id
+        this.postSvc.posts$.subscribe(posts => {
+            this.posts = posts.filter(p => p.groupId === +id);
+        });
+        this.postSvc.loadPosts();
+        this.loadMessages();
+    }
+
+    setTab(tab: string): void {
+        this.activeTab = tab;
+        if (tab === 'messages') {
+            this.loadMessages();
+        }
     }
 
     postText(): void {
         if (!this.composerText.trim() || !this.group) return;
-        // this.postSvc.createPost(this.composerText.trim(), 'GROUP', this.group.id);
+        this.postSvc.createPost(this.composerText.trim(), 'GROUP', this.group.id);
         this.composerText = '';
+    }
+
+    loadMessages(): void {
+        const groupId = Number(this.route.snapshot.params['id']);
+        if (!groupId) return;
+
+        this.loadingMessages = true;
+        this.groupMsgSvc.getMessages(groupId).subscribe({
+            next: (msgs) => {
+                this.messages = msgs;
+                this.loadingMessages = false;
+                this.scrollMessagesToBottom();
+            },
+            error: () => {
+                this.messages = [];
+                this.loadingMessages = false;
+            }
+        });
+    }
+
+    sendMessage(): void {
+        const groupId = Number(this.route.snapshot.params['id']);
+        if (!groupId || !this.messageText.trim()) return;
+
+        const content = this.messageText.trim();
+        this.groupMsgSvc.sendMessage(groupId, content).subscribe({
+            next: (msg) => {
+                this.messages = [...this.messages, msg];
+                this.messageText = '';
+                this.scrollMessagesToBottom();
+            }
+        });
+    }
+
+    private scrollMessagesToBottom(): void {
+        setTimeout(() => {
+            const el = document.querySelector('.group-chat-body');
+            if (el) el.scrollTop = el.scrollHeight;
+        }, 30);
     }
 }

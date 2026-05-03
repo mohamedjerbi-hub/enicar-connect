@@ -183,3 +183,105 @@
 .fade-in {
     animation: fadeIn 0.4s ease forwards;
 }
+
+/* ── Group chat ───────────────────────────────────────── */
+.group-chat {
+    padding: 0;
+    overflow: hidden;
+}
+
+.group-chat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--navy-nav);
+}
+
+.group-chat-head .title {
+    font-weight: 800;
+    letter-spacing: -.2px;
+    color: var(--text-1);
+}
+
+.group-chat-body {
+    height: 420px;
+    overflow: auto;
+    padding: 1.1rem 1.2rem;
+    background: var(--bg-card);
+}
+
+.msg-row {
+    display: flex;
+    gap: .8rem;
+    margin-bottom: .9rem;
+    animation: itemFadeIn .25s ease both;
+}
+
+.msg-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+    background: rgba(37, 99, 235, .12);
+    border: 1px solid rgba(37, 99, 235, .20);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+.msg-bubble {
+    flex: 1;
+    background: var(--bg-inner);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: .75rem .9rem;
+}
+
+.msg-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .25rem;
+    color: var(--text-2);
+    font-size: .82rem;
+}
+
+.msg-meta strong {
+    color: var(--text-1);
+}
+
+.msg-text {
+    color: var(--text);
+    line-height: 1.35;
+}
+
+.empty-chat {
+    text-align: center;
+    color: var(--text-3);
+    padding: 2rem 1rem;
+}
+
+.group-chat-foot {
+    display: flex;
+    gap: .7rem;
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--border);
+    background: var(--navy-nav);
+}
+
+.group-chat-foot input {
+    flex: 1;
+    background: var(--search-bg);
+    border: 1px solid var(--border);
+    padding: .85rem 1rem;
+    color: var(--text);
+}
+
+.group-chat-foot input::placeholder {
+    color: var(--text-3);
+}
