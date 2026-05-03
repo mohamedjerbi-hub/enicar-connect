@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>JSF Admin Dashboard</title>
+    <style>body { font-family: Arial, sans-serif; padding: 20px; }</style>
+</h:head>
+<h:body>
+    <h2><h:outputText value="#{adminDashboardBean.welcomeMessage}"/></h2>
+    <hr/>
+    <h3>System Indicators</h3>
+    <h:dataTable value="#{adminDashboardBean.systemStats}" var="stat">
+        <h:column>
+            <li><h:outputText value="#{stat}"/></li>
+        </h:column>
+    </h:dataTable>
+</h:body>
+</html>

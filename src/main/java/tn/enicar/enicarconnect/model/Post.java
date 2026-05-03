@@ -47,7 +47,11 @@ public class Post {
 
     /** Users mentioned in the post */
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "post_mentions", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(
+        name = "post_mentions",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     @Builder.Default
     private List<User> mentions = new ArrayList<>();
 

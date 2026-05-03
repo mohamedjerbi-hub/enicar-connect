@@ -187,3 +187,35 @@ CREATE TABLE IF NOT EXISTS connection_requests (
     status      VARCHAR(20) NOT NULL DEFAULT 'PENDING',
     timestamp   TIMESTAMP DEFAULT now()
 );
+
+-- User Educations
+CREATE TABLE IF NOT EXISTS user_educations (
+    id              BIGSERIAL PRIMARY KEY,
+    user_id         BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    institution     VARCHAR(255),
+    degree          VARCHAR(255),
+    field_of_study  VARCHAR(255),
+    start_date      DATE,
+    end_date        DATE,
+    description     TEXT
+);
+
+-- User Experiences
+CREATE TABLE IF NOT EXISTS user_experiences (
+    id              BIGSERIAL PRIMARY KEY,
+    user_id         BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    company         VARCHAR(255),
+    title           VARCHAR(255),
+    location        VARCHAR(255),
+    start_date      DATE,
+    end_date        DATE,
+    description     TEXT
+);
+
+-- User Skills
+CREATE TABLE IF NOT EXISTS user_skills (
+    id              BIGSERIAL PRIMARY KEY,
+    user_id         BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name            VARCHAR(255),
+    level           VARCHAR(50)
+);

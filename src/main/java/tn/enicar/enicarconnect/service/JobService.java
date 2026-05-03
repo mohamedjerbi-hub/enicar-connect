@@ -139,21 +139,26 @@ public class JobService {
     }
 
     private String getRelativeTime(LocalDateTime createdAt) {
-        if (createdAt == null)
+        if (createdAt == null) {
             return "À l'instant";
+        }
 
         Duration duration = Duration.between(createdAt, LocalDateTime.now());
         long diffHours = duration.toHours();
         long diffDays = duration.toDays();
 
-        if (diffHours < 1)
+        if (diffHours < 1) {
             return "Il y a moins d'une heure";
-        if (diffHours < 24)
+        }
+        if (diffHours < 24) {
             return "Il y a " + diffHours + " heure(s)";
-        if (diffDays == 1)
+        }
+        if (diffDays == 1) {
             return "Il y a " + diffDays + " jour";
-        if (diffDays < 7)
+        }
+        if (diffDays < 7) {
             return "Il y a " + diffDays + " jours";
+        }
         long weeks = diffDays / 7;
         return "Il y a " + weeks + " semaine(s)";
     }

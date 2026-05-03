@@ -34,34 +34,53 @@ public class UserService {
         return authService.toDTO(user);
     }
 
+    /**
+     * Update an existing user with non-null fields from the provided DTO.
+     * <p>
+     * Only fields that are non-null on the DTO are copied to the entity.
+     *
+     * @param id  the id of the user to update
+     * @param dto the DTO containing updated values (only non-null fields are applied)
+     * @return the updated `UserDTO`
+     */
     @Transactional
-    public UserDTO update(Long id, UserDTO dto) {
+    public UserDTO update(final Long id, final UserDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-        if (dto.getFirstName() != null)
+        if (dto.getFirstName() != null) {
             user.setFirstName(dto.getFirstName());
-        if (dto.getLastName() != null)
+        }
+        if (dto.getLastName() != null) {
             user.setLastName(dto.getLastName());
-        if (dto.getPhone() != null)
+        }
+        if (dto.getPhone() != null) {
             user.setPhone(dto.getPhone());
-        if (dto.getBio() != null)
+        }
+        if (dto.getBio() != null) {
             user.setBio(dto.getBio());
-        if (dto.getWebsite() != null)
+        }
+        if (dto.getWebsite() != null) {
             user.setWebsite(dto.getWebsite());
-        if (dto.getLinkedin() != null)
+        }
+        if (dto.getLinkedin() != null) {
             user.setLinkedin(dto.getLinkedin());
-        if (dto.getGithub() != null)
+        }
+        if (dto.getGithub() != null) {
             user.setGithub(dto.getGithub());
-        if (dto.getDepartment() != null)
+        }
+        if (dto.getDepartment() != null) {
             user.setDepartment(dto.getDepartment());
-        if (dto.getLevel() != null)
+        }
+        if (dto.getLevel() != null) {
             user.setLevel(dto.getLevel());
+        }
+
         if (dto.getSkills() != null) {
             Set<String> normalizedSkills = dto.getSkills().stream()
-                    .filter(skill -> skill != null && !skill.isBlank())
-                    .map(String::trim)
-                    .collect(java.util.stream.Collectors.toCollection(LinkedHashSet::new));
+                .filter(skill -> skill != null && !skill.isBlank())
+                .map(String::trim)
+                .collect(java.util.stream.Collectors.toCollection(LinkedHashSet::new));
             user.setSkills(normalizedSkills);
         }
 

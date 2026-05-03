@@ -48,7 +48,7 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Starting database initialization from seed-data.json...");
 
         InputStream inputStream = TypeReference.class.getResourceAsStream("/seed-data.json");
-        Map<String, List<Map<String, Object>>> data = objectMapper.readValue(inputStream, new TypeReference<>() {});
+        Map<String, List<Map<String, Object>>> data = objectMapper.readValue(inputStream, new TypeReference<>() { });
 
         // Lookup maps for O(1) access by seed ID
         Map<Integer, User> userMap = new HashMap<>();
@@ -189,10 +189,14 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private String extractHashtags(String body) {
-        if (body == null) return null;
+        if (body == null) {
+            return null;
+        }
         java.util.LinkedHashSet<String> tags = new java.util.LinkedHashSet<>();
         java.util.regex.Matcher m = java.util.regex.Pattern.compile("#(\\w+)").matcher(body);
-        while (m.find()) tags.add(m.group(1).toLowerCase());
+        while (m.find()) {
+            tags.add(m.group(1).toLowerCase());
+        }
         return tags.isEmpty() ? null : String.join(",", tags);
     }
 }

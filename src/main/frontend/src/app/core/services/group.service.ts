@@ -2,10 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Group } from '../models/group.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class GroupService {
-    private readonly API = 'http://localhost:8081/api/groups';
+    private readonly API = `${environment.apiUrl}/groups`;
     private http = inject(HttpClient);
 
     private _groups = new BehaviorSubject<Group[]>([]);

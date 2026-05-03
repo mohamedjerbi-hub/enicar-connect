@@ -49,7 +49,16 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Admin-only endpoints
-                        .requestMatchers("/api/users").hasAnyRole("ADMIN_STAFF", "DIRECTION")
+                        .requestMatchers("/api/users", 
+                                         "/api/documents/pending", 
+                                         "/api/documents/{id}/approve", 
+                                         "/api/documents/{id}/reject").hasAnyRole("ADMIN_STAFF", "DIRECTION")
+                        // Authenticated new endpoints explicitly registered
+                        .requestMatchers("/api/documents/request", 
+                                         "/api/documents/my-requests", 
+                                         "/api/documents/{id}/download",
+                                         "/api/grades/my-grades", 
+                                         "/api/grades/reclamation").authenticated()
                         // All other API endpoints require authentication
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll())

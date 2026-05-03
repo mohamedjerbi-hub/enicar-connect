@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Post, CommentData } from '../models/post.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PostService {
-    private readonly API = 'http://localhost:8081/api';
+    private readonly API = `${environment.apiUrl}`;
     private http = inject(HttpClient);
     private auth = inject(AuthService);
 

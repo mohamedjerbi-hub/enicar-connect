@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Resource } from '../models/resource.model';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ResourceService {
-    private readonly API = 'http://localhost:8081/api/resources';
+    private readonly API = `${environment.apiUrl}/resources`;
     private http = inject(HttpClient);
 
     private _resources = new BehaviorSubject<Resource[]>([]);

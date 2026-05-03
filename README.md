@@ -114,3 +114,28 @@ The ideation, architecture, and coding responsibilities are equally divided acro
 
 ## 📄 License & Contributing
 Tasks, Bug Tracking, and Feature Specifications are intensely managed via the **Issues** and **Projects** boards associated with this GitHub repository. Contributions must align with the `docs/design/cahier_des_charges.md`.
+
+---
+
+## Architectural Quality Strategy
+
+**Technology Stack Additions**
+To comply with the strict development guidelines, the stack has natively integrated:
+*   **SonarQube** (with JaCoCo) for systemic code smells analysis.
+*   **AspectJ (AOP)** for decoupled lifecycle tracing.
+*   **JoinFaces/JSF** strictly isolated for server-side administration rendering.
+
+**1. AOP Strategy (Aspect-Oriented Programming)**
+A cross-cutting concern layer handles Service operations. The `LoggingAspect.java` utilizes `@Before` and `@AfterReturning` advice via pointcuts (`execution(* tn.enicar.enicarconnect.service.*.*(..))`). This safely extracts trace analytics and performance logging without polluting business logic.
+
+**2. Testing Strategy**
+Testing covers the functional pyramid:
+*   **Web Layer:** Verified via `MockMvc` evaluating standard API responses on actual Controllers (e.g., `AuthControllerTest`).
+*   **Business Layer:** Isolated via Mockito mocks injecting repository stubs (e.g., `UserServiceTest`).
+*   **Data Access Layer:** Integrated inside an h2 execution context evaluating real generated JPA schemas via `@DataJpaTest` (e.g., `UserRepositoryTest`).
+
+**3. Code Quality (SonarQube) & Logging**
+We enforce gates natively using the `sonar-maven-plugin`. The `sonar-project.properties` configuration enforces quality gates excluding non-business classes (like DTOs). In addition, centralized SLF4J/Logback logs rotate daily via `logback-spring.xml`.
+
+**4. JSF Architecture Constraint Adaptation**
+Given that the ENICAR application consumes REST pipelines via an Angular SPA, JSF was heavily conflicting. We met the requirement by deploying a lightweight, internal server-side isolated "Monitoring / Admin Dash" using JoinFaces rendered via backing beans natively managed by `@Named` IoC containers.

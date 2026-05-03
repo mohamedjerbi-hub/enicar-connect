@@ -1,0 +1,17 @@
+.global-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--gold, #d4af37);
+  z-index: 9999;
+  animation: loading-pulse 1.5s infinite ease-in-out;
+  box-shadow: 0 0 10px var(--gold, #d4af37);
+}
+
+@keyframes loading-pulse {
+  0% { transform: translateX(-100%); width: 10%; }
+  50% { transform: translateX(50%); width: 70%; }
+  100% { transform: translateX(200%); width: 10%; }
+}

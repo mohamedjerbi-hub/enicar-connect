@@ -270,6 +270,31 @@
     cursor: not-allowed;
 }
 
+/* Skeleton Loaders */
+.skeleton-card {
+    pointer-events: none;
+    animation: sk-pulse 1.5s infinite ease-in-out;
+}
+
+.sk-av {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-hover);
+    flex-shrink: 0;
+}
+
+.sk-line {
+    background: var(--bg-hover);
+    border-radius: 4px;
+}
+
+@keyframes sk-pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0.6; }
+}
+
 /* Posts */
 .post-card {
     padding: 1.25rem;

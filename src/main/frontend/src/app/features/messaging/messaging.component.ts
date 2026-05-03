@@ -6,6 +6,7 @@ import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { ToastComponent } from '../../shared/toast/toast.component';
 import { ChatService, ChatMessage } from '../../core/services/chat.service';
 import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 interface Conversation {
   id: number;
@@ -49,7 +50,7 @@ export class MessagingComponent implements OnInit {
   }
 
   loadDirectory() {
-    this.http.get<any[]>('http://localhost:8081/api/users/directory').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/users/directory`).subscribe({
       next: (users) => {
         this.conversations = users
           .filter(u => u.id !== this.myId)

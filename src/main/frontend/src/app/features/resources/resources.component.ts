@@ -7,6 +7,7 @@ import { ToastComponent } from '../../shared/toast/toast.component';
 import { ToastService } from '../../core/services/toast.service';
 import { ResourceService } from '../../core/services/resource.service';
 import { Resource } from '../../core/models/resource.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-resources',
@@ -83,6 +84,6 @@ export class ResourcesComponent implements OnInit {
   download(r: Resource): void {
     this.toast.show('fas fa-download', `Début du téléchargement : ${r.title}`);
     // Ouvre le lien de téléchargement fourni par Spring Boot dans un nouvel onglet
-    window.open(`http://localhost:8081/api/resources/${r.id}/download`, '_blank');
+    window.open(`${environment.apiUrl}/resources/${r.id}/download`, '_blank');
   }
 }

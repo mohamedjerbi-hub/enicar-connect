@@ -16,7 +16,11 @@ public class SpaWebFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (!path.startsWith("/api") && !path.contains(".") && path.matches("/(.*)")) {
+        if (!path.startsWith("/api") 
+            && !path.startsWith("/ws") 
+            && !path.startsWith("/stomp") 
+            && !path.contains(".") 
+            && path.matches("/(.*)")) {
             request.getRequestDispatcher("/index.html").forward(request, response);
             return;
         }

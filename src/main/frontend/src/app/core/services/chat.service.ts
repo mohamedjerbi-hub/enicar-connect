@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Client, IMessage } from '@stomp/stompjs';
 // Attention: sockjs-client peut nécessiter une importation globale ou * as
 import SockJS from 'sockjs-client';
+import { environment } from '../../../environments/environment';
+import { AuthService } from './auth.service';
 
 export interface ChatMessage {
     id?: number;
@@ -18,10 +20,13 @@ export interface ChatMessage {
 export class ChatService {
     private stompClient: Client;
     private http = inject(HttpClient);
+    private authService = inject(AuthService);
 
-    // ID mocké de l'utilisateur connecté (pour la démonstration).
-    // À remplacer dynamiquement par "auth.service.getCurrentUserId()"
-    public myId: number | null = null;
+    private currentUserId: number | null = null;
+
+    get myId(): number | undefined {
+        return this.currentUserId ?? this.authService.currentUser()?.id;
+    }
 
     private _messages = new BehaviorSubject<ChatMessage[]>([]);
     public messages$ = this._messages.asObservable();
@@ -30,8 +35,8 @@ export class ChatService {
         this.stompClient = new Client({
             // Note: on utilise wss:// ou ws:// directement si SockJS n'est pas activé côté server, 
             // mais comme @stomp/stompjs le supporte bien, on injecte SockJS ou l'URL WebSocket vanilla
-            brokerURL: 'ws://localhost:8081/ws',
-            // webSocketFactory: () => new SockJS('http://localhost:8081/ws'), // Décommentez si vous utilisez .withSockJS() en backend
+            brokerURL: environment.wsUrl,
+            // webSocketFactory: () => new SockJS(`${environment.apiUrl.replace('/api', '/ws')}`), // Décommentez si vous utilisez .withSockJS() en backend
             debug: () => {
                 /* STOMP debug désactivé en livrable (pas de console.log) */
             },
@@ -39,9 +44,13 @@ export class ChatService {
         });
 
         this.stompClient.onConnect = () => {
+            const userId = this.myId;
+            if (userId == null) {
+                return;
+            }
+
             // S'abonner à SA propre file d'attente de messages personnels
-            if (this.myId == null) return;
-            this.stompClient.subscribe(`/user/${this.myId}/queue/messages`, (message: IMessage) => {
+            this.stompClient.subscribe(`/user/${userId}/queue/messages`, (message: IMessage) => {
                 const newMessage: ChatMessage = JSON.parse(message.body);
                 // Ajouter le nouveau message à l'UI
                 this._messages.next([...this._messages.value, newMessage]);
@@ -50,14 +59,14 @@ export class ChatService {
     }
 
     public setCurrentUserId(userId: number): void {
-        this.myId = userId;
+        this.currentUserId = userId;
         if (!this.stompClient.active) {
             this.stompClient.activate();
         }
     }
 
     public getConversation(partnerId: number): void {
-        this.http.get<ChatMessage[]>(`http://localhost:8081/api/messages/${partnerId}`)
+        this.http.get<ChatMessage[]>(`${environment.apiUrl}/messages/${partnerId}`)
             .subscribe({
                 next: (msgs) => this._messages.next(msgs),
                 error: (err) => {
@@ -68,9 +77,13 @@ export class ChatService {
     }
 
     public sendMessage(recipientId: number, content: string): void {
-        if (this.myId == null) return;
+        const currentId = this.myId;
+        if (currentId == null) {
+            console.error('Cannot send message: User not logged in.');
+            return;
+        }
         const msg: ChatMessage = {
-            senderId: this.myId,
+            senderId: currentId,
             recipientId: recipientId,
             content: content
         };

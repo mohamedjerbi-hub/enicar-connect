@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Job } from '../models/job.model';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 interface MatchingResult {
     jobOfferId: number;
@@ -12,7 +13,7 @@ interface MatchingResult {
 
 @Injectable({ providedIn: 'root' })
 export class JobService {
-    private readonly API = 'http://localhost:8081/api/jobs';
+    private readonly API = `${environment.apiUrl}/jobs`;
     private http = inject(HttpClient);
 
     private _jobs = new BehaviorSubject<Job[]>([]);

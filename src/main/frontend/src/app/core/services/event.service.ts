@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppEvent } from '../models/event.model';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
-    private readonly API = 'http://localhost:8081/api/events';
+    private readonly API = `${environment.apiUrl}/events`;
     private http = inject(HttpClient);
 
     private _events = new BehaviorSubject<AppEvent[]>([]);

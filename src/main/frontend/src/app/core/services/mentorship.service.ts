@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface MentorshipDTO {
     id: number;
@@ -24,7 +25,7 @@ export interface MentorDTO {
 @Injectable({ providedIn: 'root' })
 export class MentorshipService {
     private http = inject(HttpClient);
-    private API = 'http://localhost:8081/api/mentorship';
+    private API = `${environment.apiUrl}/mentorship`;
 
     getAvailableMentors(): Observable<MentorDTO[]> {
         return this.http.get<MentorDTO[]>(`${this.API}/available-mentors`);

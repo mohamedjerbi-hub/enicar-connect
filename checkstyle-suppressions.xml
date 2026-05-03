@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+
+  <!--
+    Spring Boot main class: @SpringBootApplication requires a public class
+    with a public constructor — suppress the utility-class check for it.
+  -->
+  <suppress
+      checks="HideUtilityClassConstructor"
+      files="EnicarConnectApplication\.java"/>
+
+  <!--
+    Config classes (SecurityConfig etc.) contain long builder-chain
+    expressions that are idiomatic Spring Security — allow longer lines.
+  -->
+  <suppress
+      checks="LineLength"
+      files="[\\/]config[\\/]"/>
+
+  <!--
+    Test sources: relax line-length and method-naming rules.
+    Test methods legitimately use underscores (testFoo_whenX_thenY) and
+    may have long assertion chains / mock setup lines.
+  -->
+  <suppress
+      checks="LineLength"
+      files="[\\/]test[\\/]"/>
+
+  <suppress
+      checks="MethodName"
+      files="[\\/]test[\\/]"/>
+
+</suppressions>

@@ -116,6 +116,19 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- 7. Aspect-Oriented Programming (AOP) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- 6. JSF (JoinFaces) for minimal server-side rendering -->
+        <dependency>
+            <groupId>org.joinfaces</groupId>
+            <artifactId>jsf-spring-boot-starter</artifactId>
+            <version>5.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -133,7 +146,26 @@
                     </excludes>
                 </configuration>
             </plugin>
-            
+
+            <!-- Checkstyle — custom rules (see checkstyle.xml) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <suppressionsLocation>
+                        checkstyle-suppressions.xml
+                    </suppressionsLocation>
+                    <propertyExpansion>
+                        config_loc=${project.basedir}
+                    </propertyExpansion>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+            </plugin>
+
             <!-- Frontend Maven Plugin for Angular -->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
@@ -198,6 +230,41 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- 8. SonarQube quality analysis plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.11.0.3922</version>
+            </plugin>
+            
+            <!-- JaCoCo (Helps SonarQube read test coverage for Item 8) -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Pin Surefire to a locally cached version to avoid flaky Central lookups during install -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
             </plugin>
         </plugins>
     </build>

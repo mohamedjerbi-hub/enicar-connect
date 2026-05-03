@@ -2,6 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { User, Role } from '../models/user.model';
+import { environment } from '../../../environments/environment';
 
 export interface LoginRequest {
     email: string;
@@ -45,7 +46,7 @@ interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private readonly API = 'http://localhost:8081/api/auth';
+    private readonly API = `${environment.apiUrl}/auth`;
     private http = inject(HttpClient);
     private router = inject(Router);
 

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface NetworkConnection {
     id: number;
@@ -20,7 +21,7 @@ export interface ConnectionReq {
 
 @Injectable({ providedIn: 'root' })
 export class NetworkService {
-    private readonly API = 'http://localhost:8081/api/network';
+    private readonly API = `${environment.apiUrl}/network`;
     private http = inject(HttpClient);
 
     // Récupérer la liste des connexions approuvées (le réseau)

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PostService } from './post.service';
+import { environment } from '../../../environments/environment';
 
 describe('PostService', () => {
   let service: PostService;
@@ -33,7 +34,7 @@ describe('PostService', () => {
       expect(posts[0].hashtagList).toEqual(['world']);
     });
 
-    const req = httpMock.expectOne('http://localhost:8081/api/posts');
+    const req = httpMock.expectOne(`${environment.apiUrl}/posts`);
     expect(req.request.method).toBe('GET');
     req.flush(mockFeed);
   });

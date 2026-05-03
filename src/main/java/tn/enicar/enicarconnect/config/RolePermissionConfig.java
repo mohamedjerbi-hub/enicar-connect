@@ -6,8 +6,27 @@ import tn.enicar.enicarconnect.model.Role;
 
 import java.util.*;
 
-import static tn.enicar.enicarconnect.model.Permission.*;
-import static tn.enicar.enicarconnect.model.Role.*;
+import static tn.enicar.enicarconnect.model.Permission.DASHBOARD_VIEW;
+import static tn.enicar.enicarconnect.model.Permission.EVENT_CREATE;
+import static tn.enicar.enicarconnect.model.Permission.EVENT_MANAGE;
+import static tn.enicar.enicarconnect.model.Permission.EVENT_VIEW;
+import static tn.enicar.enicarconnect.model.Permission.GROUP_CREATE;
+import static tn.enicar.enicarconnect.model.Permission.GROUP_VIEW;
+import static tn.enicar.enicarconnect.model.Permission.JOB_POST;
+import static tn.enicar.enicarconnect.model.Permission.JOB_VIEW;
+import static tn.enicar.enicarconnect.model.Permission.MESSAGING_USE;
+import static tn.enicar.enicarconnect.model.Permission.POST_CREATE;
+import static tn.enicar.enicarconnect.model.Permission.POST_DELETE_ANY;
+import static tn.enicar.enicarconnect.model.Permission.POST_DELETE_OWN;
+import static tn.enicar.enicarconnect.model.Permission.PROFILE_EDIT_OWN;
+import static tn.enicar.enicarconnect.model.Permission.RESOURCE_UPLOAD;
+import static tn.enicar.enicarconnect.model.Permission.RESOURCE_VIEW;
+import static tn.enicar.enicarconnect.model.Permission.USER_MANAGE;
+import static tn.enicar.enicarconnect.model.Role.ADMIN_STAFF;
+import static tn.enicar.enicarconnect.model.Role.ALUMNI;
+import static tn.enicar.enicarconnect.model.Role.DIRECTION;
+import static tn.enicar.enicarconnect.model.Role.STUDENT;
+import static tn.enicar.enicarconnect.model.Role.TEACHER;
 
 /**
  * Mapping rôle → ensemble de permissions.
