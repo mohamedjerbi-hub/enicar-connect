@@ -6,19 +6,24 @@
 **Authors:** [Author Name Placeholder]
 
 ## Table of Contents
-1. [System Overview](#1-system-overview)
-2. [High-Level Architecture](#2-high-level-architecture)
-3. [Technology Stack](#3-technology-stack)
-4. [Component Design](#4-component-design)
-5. [Data Model](#5-data-model)
-6. [Data Flow](#6-data-flow)
-7. [Deployment Architecture](#7-deployment-architecture)
-8. [REST API Contract](#8-rest-api-contract)
-9. [Security Architecture](#9-security-architecture)
-10. [Non-Functional Requirements](#10-non-functional-requirements)
-11. [Trade-offs](#11-trade-offs)
-12. [Contributing](#12-contributing)
-13. [License](#13-license)
+- [Technical Design Document: ENICAR Connect](#technical-design-document-enicar-connect)
+  - [Table of Contents](#table-of-contents)
+  - [1. System Overview](#1-system-overview)
+  - [2. High-Level Architecture](#2-high-level-architecture)
+  - [3. Technology Stack](#3-technology-stack)
+  - [4. Component Design](#4-component-design)
+    - [4.1 Client Tier](#41-client-tier)
+    - [4.2 Compute Tier](#42-compute-tier)
+    - [4.3 Persistence Tier](#43-persistence-tier)
+  - [5. Data Model](#5-data-model)
+  - [6. Data Flow](#6-data-flow)
+  - [7. Deployment Architecture](#7-deployment-architecture)
+  - [8. REST API Contract](#8-rest-api-contract)
+  - [9. Security Architecture](#9-security-architecture)
+  - [10. Non-Functional Requirements](#10-non-functional-requirements)
+  - [11. Trade-offs](#11-trade-offs)
+  - [12. Contributing](#12-contributing)
+  - [13. License](#13-license)
 
 ## 1. System Overview
 ENICAR Connect is a centralized digital community platform for the École Nationale d'Ingénieurs de Carthage (ENI Carthage). It unifies scattered communication channels and digitizes administrative workflows. The platform provides internal social networking, professional mentoring, and utility services in a highly available, secure, and maintainable ecosystem.
@@ -26,42 +31,7 @@ ENICAR Connect is a centralized digital community platform for the École Nation
 ## 2. High-Level Architecture
 The system uses an API-centric, single-page application (SPA) monolith pattern. The Angular frontend is built via Maven and embedded into a Spring Boot application, simplifying deployment and eliminating CORS issues.
 
-```mermaid
-graph TD
-    %% CI/CD Pipeline
-    subgraph CI/CD Pipeline
-        CodePush[Source Code Push]
-        MavenBuild[Maven Build: mvn package]
-        DockerImg[Build Docker Image]
-        CodePush --> MavenBuild
-        MavenBuild -->|Compiles Angular and Java| DockerImg
-    end
-
-    %% Client Boundary
-    Client["Client Tier<br><b>Web Browser (Angular)</b>"]
-    
-    %% Compute Boundary
-    subgraph Docker Compose Environment
-        subgraph AppContainer [App Container]
-            Spring["Application Server<br><b>Spring Boot</b>"]
-            SpaFilter["Web Filter<br><b>SPA Dispatcher</b>"]
-            Flyway["Flyway Migration System"]
-        end
-        
-        %% DB Container
-        PG["Relational Database<br><b>PostgreSQL</b>"]
-    end
-    
-    %% Connections
-    DockerImg -->|Deploys to| AppContainer
-    Client -->|HTTPS REST| Spring
-    Client -->|WebSocket STOMP| Spring
-    Spring -->|Internal Route| SpaFilter
-    SpaFilter -->|Fallback Resolve| Client
-    
-    Spring -->|JDBC/Hibernate| PG
-    Flyway -->|Schema Migrations| PG
-```
+![Architecture](architecture.png)
 
 ## 3. Technology Stack
 
