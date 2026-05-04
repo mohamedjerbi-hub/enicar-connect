@@ -17,25 +17,21 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final RolePermissionConfig rolePermissionConfig;
+        private final UserRepository userRepository;
+        private final RolePermissionConfig rolePermissionConfig;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable : " + email));
+        @Override
+        public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+                User user = userRepository.findByEmail(email)
+                                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable : " + email));
 
-        // Combine ROLE_xxx + individual permissions as authorities
-        List<SimpleGrantedAuthority> authorities = Stream.concat(
-                Stream.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())),
-                rolePermissionConfig.getPermissions(user.getRole()).stream()
-                        .map(p -> new SimpleGrantedAuthority(p.name()))
-        ).toList();
+                // Combine ROLE_xxx + individual permissions as authorities
+                user.setAuthorities(Stream.concat(
+                                Stream.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())),
+                                rolePermissionConfig.getPermissions(user.getRole()).stream()
+                                                .map(p -> new SimpleGrantedAuthority(p.name())))
+                                .toList());
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
-        );
-    }
+                return user;
+        }
 }

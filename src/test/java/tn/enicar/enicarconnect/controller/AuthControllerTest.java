@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import tn.enicar.enicarconnect.dto.LoginRequest;
+import tn.enicar.enicarconnect.support.AbstractPostgresIntegrationTest;
 import tn.enicar.enicarconnect.dto.RegisterRequest;
 import tn.enicar.enicarconnect.model.Role;
 
@@ -18,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
-class AuthControllerTest {
+@ActiveProfiles({"test", "postgres"})
+class AuthControllerTest extends AbstractPostgresIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,7 +47,7 @@ class AuthControllerTest {
 
     @Test
     void shouldLoginSuccessfullyWithValidCredentials() throws Exception {
-        // Assume seed data or previously registered user exists (test isolation handled by H2 rebuild, but let's register first to be safe)
+        // Enregistrement sur base PostgreSQL de test (Testcontainers) — schéma Flyway, sans seed démo.
         RegisterRequest regRequest = new RegisterRequest();
         regRequest.setFirstName("Login");
         regRequest.setLastName("User");

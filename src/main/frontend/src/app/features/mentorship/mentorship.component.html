@@ -15,8 +15,10 @@
     <!-- Tab 1: Mentors -->
     <div class="grid" *ngIf="activeTab === 'MENTORS'">
         <div class="mentor-card" *ngFor="let mentor of availableMentors">
-            <div class="avatar">
-                <i class="fas" [class.fa-user-graduate]="mentor.role==='ALUMNI'"
+            <div class="avatar" [style.background]="mentor.avatarBg" [style.color]="mentor.avatarColor">
+                <img *ngIf="mentor.photoUrl" [src]="mentor.photoUrl"
+                    style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+                <i *ngIf="!mentor.photoUrl" class="fas" [class.fa-user-graduate]="mentor.role==='ALUMNI'"
                     [class.fa-chalkboard-teacher]="mentor.role==='TEACHER'"></i>
             </div>
             <h3>{{ mentor.firstName }} {{ mentor.lastName }}</h3>

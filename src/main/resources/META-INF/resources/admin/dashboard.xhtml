@@ -1,17 +1,51 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <title>JSF Admin Dashboard</title>
-    <style>body { font-family: Arial, sans-serif; padding: 20px; }</style>
+    <title>Administration — ENICAR Connect</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; padding: 2rem; background: #0f172a; color: #e2e8f0; }
+        h2 { color: #fbbf24; margin-bottom: 0.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .card { background: #1e293b; border-radius: 8px; padding: 1rem; border: 1px solid #334155; }
+        .card strong { display: block; font-size: 1.75rem; color: #38bdf8; }
+        .card span { font-size: 0.85rem; color: #94a3b8; }
+        ul { line-height: 1.8; }
+    </style>
 </h:head>
 <h:body>
     <h2><h:outputText value="#{adminDashboardBean.welcomeMessage}"/></h2>
-    <hr/>
-    <h3>System Indicators</h3>
-    <h:dataTable value="#{adminDashboardBean.systemStats}" var="stat">
+    <p>Vue d'ensemble synchronisée avec PostgreSQL (requête à chaque chargement de page).</p>
+
+    <div class="grid">
+        <div class="card">
+            <strong><h:outputText value="#{adminDashboardBean.userCount}"/></strong>
+            <span>Utilisateurs</span>
+        </div>
+        <div class="card">
+            <strong><h:outputText value="#{adminDashboardBean.groupCount}"/></strong>
+            <span>Groupes</span>
+        </div>
+        <div class="card">
+            <strong><h:outputText value="#{adminDashboardBean.postCount}"/></strong>
+            <span>Publications</span>
+        </div>
+        <div class="card">
+            <strong><h:outputText value="#{adminDashboardBean.jobOfferCount}"/></strong>
+            <span>Offres d'emploi</span>
+        </div>
+        <div class="card">
+            <strong><h:outputText value="#{adminDashboardBean.mentorshipRequestCount}"/></strong>
+            <span>Mentorats</span>
+        </div>
+    </div>
+
+    <h3 style="color:#fbbf24;">Indicateurs détaillés</h3>
+    <h:dataTable value="#{adminDashboardBean.systemStats}" var="stat" styleClass="stats">
         <h:column>
-            <li><h:outputText value="#{stat}"/></li>
+            <f:facet name="header">Élément</f:facet>
+            <h:outputText value="#{stat}"/>
         </h:column>
     </h:dataTable>
 </h:body>

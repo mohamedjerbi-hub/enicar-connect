@@ -32,7 +32,7 @@ The project follows an Enterprise-grade monolithic architecture. Rather than mai
 
 - **Backend:** Java 17 | Spring Boot 3 | Spring Security (JWT Stateless Authentication)
 - **Frontend:** Angular 17+ | Tailwind CSS | RxJS | STOMP WebSockets
-- **Persistence:** PostgreSQL 15 (Production) | H2 Database (Local Dev)
+- **Persistence:** PostgreSQL 15 (Flyway) — local et production
 - **Infrastructure:** Docker | Docker Compose | Flyway Migrations | Maven Build Automations
 
 ---
@@ -43,7 +43,7 @@ The project follows an Enterprise-grade monolithic architecture. Rather than mai
 Make sure you have the following installed to run the application natively:
 - **Java 17+**
 - **Node.js 20+**
-- **Docker 24+** (Required for production environments)
+- **Docker 24+** (PostgreSQL local / production ; **obligatoire** pour `mvn test` — Testcontainers)
 
 ### 1. Unified Local Development
 The application compiles both the Javascript Frontend and the Java Backend automatically.
@@ -52,11 +52,8 @@ The application compiles both the Javascript Frontend and the Java Backend autom
 # 1. Ask Maven to install Node, build the Angular Prod artifacts, and package the Spring JAR
 .\mvnw.cmd clean install -DskipTests
 
-# 2. Boot the Unified Application (Default: H2 Memory Mode)
+# 2. Démarrer PostgreSQL (ex. docker compose up db -d) puis lancer l'application
 .\mvnw.cmd spring-boot:run
-
-# 3. Boot with PostgreSQL (Requires Docker for DB)
-.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=postgres
 ```
 > 📍 **App lives at**: `http://localhost:8081`
 
@@ -74,31 +71,24 @@ docker-compose up --build -d
 
 ## 🔍 Exploration & Debugging (Database)
 
-### 1. Mode H2 (Développement Local Rapide)
-Si vous lancez l'application sans profil particulier (H2 par défaut), la base est un fichier local `./database`.
-- **Console H2** : `http://localhost:8081/h2-console`
-- **JDBC URL** : `jdbc:h2:file:./database`
-- **User** : `sa` | **Password** : *(vide)*
-
-### 2. Mode PostgreSQL (Docker / Soutenance)
-Si vous utilisez le profil `postgres` :
-- **Accès DB** : Utilisez un client (pgAdmin, Dbeaver) sur `localhost:5432`.
-- **Identifiants** : User: `enicar` | Password: `enicar2026` | DB: `enicar_db`.
+PostgreSQL est le seul SGBD utilisé (profil `postgres` activé par défaut dans `application.properties`).
+- **Accès DB** : pgAdmin, DBeaver, etc. sur `localhost:5432` (après `docker compose up db -d` ou stack complète).
+- **Identifiants par défaut** : utilisateur `enicar` | mot de passe `enicar2026` | base `enicar_db`.
+- Variables d'environnement optionnelles : `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `JWT_SECRET`, `CORS_ORIGINS`.
 
 ---
 
-## 🔑 Scénarios de Test & Comptes Démo
-La base est pré-peuplée avec des données cohérentes (`DatabaseSeeder.java`). 
-**Mot de passe universel :** `enicarDemo2026!`
+## 🔑 Scénarios de test & comptes démo
+Après un **seed PostgreSQL** (base vide au premier démarrage), les comptes tunisiens et le parcours de test sont décrits dans **`docs/scenario-tests-enicar-connect.md`**.
 
-| Rôle | Nom | Email | Scénario de Test |
-| :--- | :--- | :--- | :--- |
-| **Direction** | Admin | `direction@enicar.ucar.tn` | Services administratifs, vue globale. |
-| **Enseignant** | Dhia | `dhia.jaidi@enicar.ucar.tn` | Publication officielle, gestion départements. |
-| **Étudiant (L)** | Jerbi | `mohamed.jerbi@enicar.ucar.tn` | Leader, Feed interactif, messagerie. |
-| **Étudiant (F)** | Babou | `mohamed.babou@enicar.ucar.tn` | Social Network, Feed, Messagerie STOMP. |
-| **Étudiant (P)** | Abidi | `mohamed-dhia.abidi@enicar.ucar.tn` | Réseau Pro, Mentorat, Offres d'emploi. |
-| **Alumni** | Vermeg | `amine.khelifi@alumni.vermeg.tn` | Recrutement, lien Etudiant-Alumni. |
+Exemples rapides :
+
+| Rôle | Email | Mot de passe |
+| :--- | :--- | :--- |
+| Admin SI | `admin@enicar.tn` | `Admin@1234` |
+| Direction | `direction@enicar.tn` | `Admin@1234` |
+| Étudiant GI | `ahmed.ben_salah@enicar.tn` | `Etud@1234` |
+| Alumni | `hatem.bouaziz@gmail.com` | `Alumni@1234` |
 
 ---
 
@@ -132,7 +122,7 @@ A cross-cutting concern layer handles Service operations. The `LoggingAspect.jav
 Testing covers the functional pyramid:
 *   **Web Layer:** Verified via `MockMvc` evaluating standard API responses on actual Controllers (e.g., `AuthControllerTest`).
 *   **Business Layer:** Isolated via Mockito mocks injecting repository stubs (e.g., `UserServiceTest`).
-*   **Data Access Layer:** Integrated inside an h2 execution context evaluating real generated JPA schemas via `@DataJpaTest` (e.g., `UserRepositoryTest`).
+*   **Data Access Layer:** Tests d'intégration JPA contre PostgreSQL éphémère (Testcontainers), par ex. `UserRepositoryTest`.
 
 **3. Code Quality (SonarQube) & Logging**
 We enforce gates natively using the `sonar-maven-plugin`. The `sonar-project.properties` configuration enforces quality gates excluding non-business classes (like DTOs). In addition, centralized SLF4J/Logback logs rotate daily via `logback-spring.xml`.

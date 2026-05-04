@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import tn.enicar.enicarconnect.support.AbstractPostgresIntegrationTest;
 import org.springframework.transaction.annotation.Transactional;
 import tn.enicar.enicarconnect.dto.CreatePostRequest;
 import tn.enicar.enicarconnect.model.Role;
@@ -23,9 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "postgres"})
 @Transactional
-class PostControllerTest {
+class PostControllerTest extends AbstractPostgresIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

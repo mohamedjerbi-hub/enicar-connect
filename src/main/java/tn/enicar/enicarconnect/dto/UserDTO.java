@@ -29,6 +29,9 @@ public class UserDTO {
     private String fullName;
     private String avatarColor;
     private String avatarBg;
+    private String photoUrl;
     private Set<String> skills;
     private List<String> permissions;
+    private List<ExperienceDTO> experiences;
+    private List<EducationDTO> educations;
 }

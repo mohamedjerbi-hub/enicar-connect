@@ -10,10 +10,14 @@ import { environment } from '../../../environments/environment';
 
 interface Conversation {
   id: number;
-  initials: string;
   name: string;
+  preview: string;
+  avatar: string;
+  avatarBg?: string;
+  avatarColor?: string;
+  photoUrl?: string;
+  initials?: string;
   online: boolean;
-  preview?: string;
   time?: string;
   unread?: number;
 }
@@ -38,7 +42,7 @@ export class MessagingComponent implements OnInit {
   searchQuery = '';
   myId = this.auth.currentUser()?.id || 1;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.chatService.setCurrentUserId(this.myId);
@@ -58,6 +62,10 @@ export class MessagingComponent implements OnInit {
             id: u.id,
             name: `${u.firstName} ${u.lastName}`,
             initials: `${u.firstName.charAt(0)}${u.lastName.charAt(0)}`.toUpperCase(),
+            avatar: '',
+            avatarBg: u.avatarBg,
+            avatarColor: u.avatarColor,
+            photoUrl: u.photoUrl,
             online: true,
             preview: 'Démarrer une conversation...',
             time: ''

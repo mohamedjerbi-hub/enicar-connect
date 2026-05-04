@@ -18,10 +18,15 @@ export class ProfileComponent {
   toast = inject(ToastService);
   auth = inject(AuthService);
 
-  experience = [
-    { icon: 'fas fa-code', title: 'Stagiaire Développeur Web', company: 'Carthage Solutions', period: 'Juin–Août 2025', description: 'Développement Angular + Spring Boot. Pipeline CI/CD GitLab.' },
-    { icon: 'fas fa-graduation-cap', title: 'Projet ENICAR Connect', company: 'ENI Carthage', period: 'Janv. 2026–Présent', description: 'Réseau social professionnel pour étudiants et enseignants.' },
-  ];
+  get user() { return this.auth.currentUser(); }
+
+  get experience() {
+    const list = this.user?.experiences;
+    return list && list.length ? list : [
+      { icon: 'fas fa-code', title: 'Stagiaire Développeur Web', company: 'Carthage Solutions', period: 'Juin–Août 2025', description: 'Développement Angular + Spring Boot. Pipeline CI/CD GitLab.' },
+      { icon: 'fas fa-graduation-cap', title: 'Projet ENICAR Connect', company: 'ENI Carthage', period: 'Janv. 2026–Présent', description: 'Réseau social professionnel pour étudiants et enseignants.' },
+    ];
+  }
 
   projects = [
     { name: 'eni-connect', vis: 'Public', description: 'Réseau social professionnel.', lang: 'JavaScript', langColor: '#f1e05a', stars: 18 },
@@ -31,7 +36,7 @@ export class ProfileComponent {
   ];
 
   get skills() {
-    const userSkills = this.auth.currentUser()?.skills ?? [];
+    const userSkills = this.user?.skills ?? [];
     if (!userSkills.length) {
       return [
         { name: 'Angular / TypeScript', pct: 88 },
@@ -43,15 +48,18 @@ export class ProfileComponent {
   }
 
   get tags() {
-    return this.auth.currentUser()?.skills?.length
-      ? this.auth.currentUser()!.skills!
+    return this.user?.skills?.length
+      ? this.user.skills
       : ['Python', 'JavaScript', 'Java', 'C', 'SQL', 'Bash'];
   }
 
-  education = [
-    { icon: 'fas fa-graduation-cap', degree: 'Génie Informatique', school: 'ENI Carthage', period: '2023–2026 (en cours)' },
-    { icon: 'fas fa-school', degree: 'Baccalauréat Maths', school: 'Lycée Carthage · Bien', period: '2022–2023' },
-  ];
+  get education() {
+    const list = this.user?.educations;
+    return list && list.length ? list : [
+      { icon: 'fas fa-graduation-cap', degree: 'Génie Informatique', school: 'ENI Carthage', period: '2023–2026 (en cours)' },
+      { icon: 'fas fa-school', degree: 'Baccalauréat Maths', school: 'Lycée Carthage · Bien', period: '2022–2023' },
+    ];
+  }
 
   certifications = [
     { icon: 'fab fa-google', name: 'Google Cybersecurity', issuer: 'Google', year: '2025' },

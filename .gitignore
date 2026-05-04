@@ -17,11 +17,6 @@ target/
 *.war
 .mvn/wrapper/maven-wrapper.jar
 
-# Bases H2 locales (dev)
-*.mv.db
-*.trace.db
-database/
-
 # ─── Angular (src/main/frontend) ─────────────────────
 src/main/frontend/node_modules/
 src/main/frontend/dist/
