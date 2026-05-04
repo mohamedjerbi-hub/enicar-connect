@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = {"post", "user"})
+@ToString(exclude = {"post", "user"})
 public class PostLike {
 
     @Id

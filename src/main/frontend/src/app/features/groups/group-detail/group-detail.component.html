@@ -1,8 +1,9 @@
 <app-particles-bg /><app-navbar />
 
 <div class="container" *ngIf="group">
-    <div class="group-header" [style.background]="group.bannerGradient">
-        <div class="header-overlay">
+    <div class="group-header" [style.background]="group.bannerGradient" style="position: relative; overflow: hidden;">
+        <img [src]="'assets/images/demo/group' + ((group.id || 0) % 5 + 1) + '.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; mix-blend-mode: overlay; pointer-events: none; z-index: 0;">
+        <div class="header-overlay" style="position: relative; z-index: 1;">
             <div class="header-content">
                 <div class="group-brand">
                     <div class="group-identity" [style.color]="group.iconColor">
@@ -64,7 +65,7 @@
 
                     <div class="group-chat-body" *ngIf="!loadingMessages; else loadingTpl">
                         <div class="msg-row" *ngFor="let m of messages">
-                            <div class="msg-avatar">{{ m.senderInitials }}</div>
+                            <img class="msg-avatar" [src]="'assets/images/demo/avatar' + ((m.senderId || 3) % 5 + 1) + '.jpg'" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                             <div class="msg-bubble">
                                 <div class="msg-meta">
                                     <strong>{{ m.senderName }}</strong>

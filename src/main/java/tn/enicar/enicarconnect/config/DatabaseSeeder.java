@@ -78,7 +78,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         private void seedAll() {
                 String encPwd = passwordEncoder.encode(DEMO_PASSWORD);
 
-                User faouzi = persistUser(encPwd, Role.TEACHER, "Faouzi", "Jaidi", "faouzi.jaidi@enicar.ucar.tn",
+                User faouzi = persistUser(encPwd, Role.TEACHER, "Dhia", "Jaidi", "dhia.jaidi@enicar.ucar.tn",
                                 "Professeur à l'ENI Carthage — cours Java / Spring Boot.",
                                 "Génie Informatique", null, null,
                                 skills("Java", "Spring Boot", "Architecture", "Microservices"));

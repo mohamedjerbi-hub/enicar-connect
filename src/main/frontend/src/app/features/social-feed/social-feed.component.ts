@@ -59,6 +59,14 @@ export class SocialFeedComponent {
     this.toast.show('fas fa-check-circle', 'Publication envoyée !');
   }
 
+  toggleLike(post: Post): void {
+    // Optimistic update
+    post.likedByMe = !post.likedByMe;
+    post.likesCount += post.likedByMe ? 1 : -1;
+    // Send to backend
+    this.postSvc.toggleLike(post.id);
+  }
+
   addComment(postId: number): void {
     const text = this.commentTexts[postId]?.trim();
     if (!text) return;
@@ -101,5 +109,41 @@ export class SocialFeedComponent {
         this.reportReason = '';
       }
     });
+  }
+
+  // --- Avatar mapping logic ---
+  getAvatarUrl(name: string): string {
+    if (!name) return 'assets/images/demo/avatar1.jpg';
+    const lower = name.toLowerCase();
+    if (lower.includes('jerbi') || lower.includes('mohamed')) return 'assets/images/demo/avatar1.jpg'; // Man
+    if (lower.includes('sami') || lower.includes('dhia')) return 'assets/images/demo/avatar2.jpg'; // Man
+    if (lower.includes('leila') || lower.includes('fatma')) return 'assets/images/demo/avatar3.jpg'; // Woman
+    return 'assets/images/demo/avatar' + ((name.length % 3) + 3) + '.jpg'; // Fallback 3, 4, 5
+  }
+
+  // --- Share Modal Logic ---
+  sharePostId: number | null = null;
+  
+  openShare(postId: number): void {
+    this.sharePostId = postId;
+  }
+  
+  shareToFeed(): void {
+    if (!this.sharePostId) return;
+    this.toast.show('fas fa-retweet', 'Publication partagée sur votre fil !');
+    this.sharePostId = null;
+  }
+  
+  sendInMessage(): void {
+    if (!this.sharePostId) return;
+    this.toast.show('fas fa-paper-plane', 'Redirection vers la messagerie...');
+    this.sharePostId = null;
+  }
+
+  copyLink(): void {
+    if (!this.sharePostId) return;
+    this.postSvc.sharePost(this.sharePostId);
+    this.toast.show('fas fa-link', 'Lien copié dans le presse-papier !');
+    this.sharePostId = null;
   }
 }

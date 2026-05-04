@@ -23,6 +23,7 @@ WORKDIR /app
 
 # Non-root user for security
 RUN addgroup -S spring && adduser -S spring -G spring
+RUN mkdir -p /app/logs && chown -R spring:spring /app
 USER spring
 
 # Copy the monolith JAR (contains both Backend API and Frontend Static files)

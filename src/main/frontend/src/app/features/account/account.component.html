@@ -21,7 +21,7 @@
     <!-- Sidebar -->
     <aside class="account-sidebar">
         <div class="user-card">
-            <div class="user-avatar" [style.background]="user.avatarColor">{{ user.avatarInitials }}</div>
+            <img class="user-avatar" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
             <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
             <div class="user-email">{{ user.email }}</div>
             <span class="role-chip" [class]="'role-chip role-'+user.role">{{ roleLabel(user.role) }}</span>
@@ -52,7 +52,7 @@
         <div class="tab-panel" *ngIf="tab==='info'">
             <h2 class="tab-title"><i class="fas fa-user"></i> Informations personnelles</h2>
             <div class="avatar-section">
-                <div class="big-avatar" [style.background]="editUser.avatarColor">{{ editUser.avatarInitials }}</div>
+                <img class="big-avatar" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                 <div>
                     <label
                         style="font-size:.8rem;font-weight:600;color:var(--text-2);display:block;margin-bottom:.4rem">Initiales

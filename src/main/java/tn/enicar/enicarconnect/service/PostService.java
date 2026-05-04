@@ -45,7 +45,7 @@ public class PostService {
 
         // Handle mentions
         if (req.getMentionedUserIds() != null && !req.getMentionedUserIds().isEmpty()) {
-            List<User> mentioned = userRepo.findAllById(req.getMentionedUserIds());
+            Set<User> mentioned = new HashSet<>(userRepo.findAllById(req.getMentionedUserIds()));
             post.setMentions(mentioned);
         }
 
@@ -123,14 +123,16 @@ public class PostService {
         Optional<PostLike> existing = likeRepo.findByPostAndUser(post, user);
         if (existing.isPresent()) {
             likeRepo.delete(existing.get());
+            post.getLikes().remove(existing.get());
             log.info("Post unliked: postId={} userId={}", postId, userId);
         } else {
-            likeRepo.save(PostLike.builder().post(post).user(user).build());
+            PostLike like = PostLike.builder().post(post).user(user).build();
+            likeRepo.save(like);
+            post.getLikes().add(like);
             log.info("Post liked: postId={} userId={}", postId, userId);
         }
 
-        return toDTO(postRepo.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Publication introuvable")), user);
+        return toDTO(post, user);
     }
 
     // ─── COMMENTS ─────────────────────────────────────────

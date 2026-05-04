@@ -93,9 +93,10 @@
 
     <div class="groups-grid">
         <div class="group-card" *ngFor="let g of filteredGroups(); let i = index" [style.animation-delay]="i*0.07+'s'">
-            <div class="group-banner" [style.background]="g.bannerGradient">
+            <div class="group-banner" [style.background]="g.bannerGradient" style="position: relative; overflow: hidden;">
+                <img [src]="'assets/images/demo/group' + ((g.id || i) % 5 + 1) + '.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; mix-blend-mode: overlay; pointer-events: none; z-index: 0;">
                 <!-- Edit/Delete only for owner -->
-                <div class="group-actions" *ngIf="g.isOwner">
+                <div class="group-actions" *ngIf="g.isOwner" style="position: relative; z-index: 1;">
                     <button class="g-action-btn" (click)="openEdit(g)"><i class="fas fa-edit"></i></button>
                     <button class="g-action-btn danger" (click)="deleteId=g.id"><i class="fas fa-trash"></i></button>
                 </div>

@@ -1,0 +1,13 @@
+target/
+node_modules/
+src/main/frontend/node_modules/
+src/main/frontend/dist/
+.angular/
+logs/
+uploads/
+database/
+*.log
+*.mv.db
+.git/
+.idea/
+.vscode/

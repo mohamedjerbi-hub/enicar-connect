@@ -42,7 +42,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      toast.show('fas fa-exclamation-triangle', errorMessage);
+      if (!req.url.includes('/like')) {
+        toast.show('fas fa-exclamation-triangle', errorMessage);
+      }
       return throwError(() => error);
     })
   );

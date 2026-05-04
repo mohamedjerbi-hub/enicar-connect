@@ -16,8 +16,8 @@
         <div class="users-list">
             <div class="user-item" *ngFor="let c of filteredConversations" [class.active]="activeConv?.id === c.id"
                 (click)="selectConv(c)">
-                <div class="user-avatar">
-                    {{ c.initials }}
+                <div class="user-avatar" style="background: none; border: none;">
+                    <img [src]="'assets/images/demo/avatar' + ((c.id || 2) % 5 + 1) + '.jpg'" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Avatar">
                     <span class="status-dot"></span>
                 </div>
                 <div class="user-info">
@@ -35,8 +35,8 @@
     <main class="chat-area">
         <ng-container *ngIf="activeConv; else emptyState">
             <div class="chat-header">
-                <div class="user-avatar">
-                    {{ activeConv.initials }}
+                <div class="user-avatar" style="background: none; border: none;">
+                    <img [src]="'assets/images/demo/avatar' + ((activeConv.id || 2) % 5 + 1) + '.jpg'" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Avatar">
                     <span class="status-dot"></span>
                 </div>
                 <div class="header-info">
@@ -55,9 +55,7 @@
                     <div class="message-bubble-wrapper" *ngFor="let m of activeMessages"
                         [class.me]="m.senderId === myId" [class.them]="m.senderId !== myId">
 
-                        <div class="bubble-avatar" *ngIf="m.senderId !== myId">
-                            {{ activeConv.initials }}
-                        </div>
+                        <img class="bubble-avatar" *ngIf="m.senderId !== myId" [src]="'assets/images/demo/avatar' + ((activeConv.id || 2) % 5 + 1) + '.jpg'" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
 
                         <div class="message-bubble">
                             <p class="message-text">{{ m.content }}</p>

@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = {"author", "group", "mentions", "likes", "comments", "reports"})
+@ToString(exclude = {"author", "group", "mentions", "likes", "comments", "reports"})
 public class Post {
 
     @Id
@@ -53,12 +58,12 @@ public class Post {
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @Builder.Default
-    private List<User> mentions = new ArrayList<>();
+    private Set<User> mentions = new HashSet<>();
 
     /** Likes on this post */
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<PostLike> likes = new ArrayList<>();
+    private Set<PostLike> likes = new HashSet<>();
 
     /** Comments on this post */
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -69,7 +74,7 @@ public class Post {
     /** Reports against this post */
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<PostReport> reports = new ArrayList<>();
+    private Set<PostReport> reports = new HashSet<>();
 
     /** Flag set by moderator to hide post */
     @Builder.Default

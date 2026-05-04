@@ -30,16 +30,29 @@
     </div>
 </div>
 
+<!-- Share modal -->
+<div class="modal-overlay" *ngIf="sharePostId !== null" (click)="sharePostId=null">
+    <div class="modal confirm-modal" (click)="$event.stopPropagation()">
+        <div class="confirm-icon" style="color:var(--gold)"><i class="fas fa-share"></i></div>
+        <h3>Partager cette publication</h3>
+        <div style="display:flex; flex-direction:column; gap:0.6rem; margin: 1.5rem 0;">
+            <button class="btn-cancel" style="width:100%;text-align:left;display:flex;gap:1rem" (click)="shareToFeed()"><i class="fas fa-retweet"></i> Republier sur mon fil</button>
+            <button class="btn-cancel" style="width:100%;text-align:left;display:flex;gap:1rem" (click)="sendInMessage()"><i class="fas fa-paper-plane"></i> Envoyer par message</button>
+            <button class="btn-cancel" style="width:100%;text-align:left;display:flex;gap:1rem" (click)="copyLink()"><i class="fas fa-link"></i> Copier le lien</button>
+        </div>
+        <div class="confirm-actions">
+            <button class="btn-cancel" (click)="sharePostId=null">Fermer</button>
+        </div>
+    </div>
+</div>
+
 <div class="feed-layout">
     <!-- LEFT: Profile mini-card -->
     <aside class="left-sidebar">
         <div class="sidebar-card">
             <div class="profile-banner"></div>
             <div class="profile-info">
-                <div class="sidebar-av" [style.background]="auth.currentUser()?.avatarBg"
-                    [style.color]="auth.currentUser()?.avatarColor">
-                    {{ auth.currentUser()?.initials }}
-                </div>
+                <img class="sidebar-av" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: 4px solid var(--bg-inner); padding: 0;" alt="Avatar">
                 <div class="sidebar-name">{{ auth.currentUser()?.name }}</div>
                 <div class="sidebar-sub">{{ auth.currentUser()?.title }}</div>
                 <div class="sidebar-stats">
@@ -64,10 +77,7 @@
         <!-- Composer -->
         <div class="composer card">
             <div class="composer-row">
-                <div class="feed-av" [style.background]="auth.currentUser()?.avatarBg"
-                    [style.color]="auth.currentUser()?.avatarColor">
-                    {{ auth.currentUser()?.initials }}
-                </div>
+                <img class="feed-av" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                 <textarea class="composer-input" [(ngModel)]="composerText"
                     placeholder="Partagez une idée, une ressource, une annonce..."
                     [class.expanded]="composerText.length > 0" rows="1"></textarea>
@@ -105,9 +115,7 @@
         <!-- Posts -->
         <div class="post-card card" *ngFor="let post of posts$ | async">
             <div class="post-head">
-                <div class="post-av" [style.background]="post.authorAvatarBg" [style.color]="post.authorAvatarColor">
-                    {{ post.authorInitials }}
-                </div>
+                <img class="post-av" [src]="getAvatarUrl(post.authorName)" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                 <div class="post-meta">
                     <div class="post-name">
                         {{ post.authorName }} <app-role-badge [role]="post.authorRole" />
@@ -145,14 +153,13 @@
 
             <!-- Reactions bar -->
             <div class="reactions-bar">
-                <button class="react-btn" [class.liked]="post.likedByMe" (click)="postSvc.toggleLike(post.id)">
+                <button class="react-btn" [class.liked]="post.likedByMe" (click)="toggleLike(post)">
                     <i class="fas fa-heart"></i> {{ post.likesCount }}
                 </button>
                 <button class="react-btn" (click)="postSvc.toggleComments(post.id)">
                     <i class="fas fa-comment"></i> {{ post.commentsCount }}
                 </button>
-                <button class="react-btn"
-                    (click)="postSvc.sharePost(post.id); toast.show('fas fa-share','Lien copié !')">
+                <button class="react-btn" (click)="openShare(post.id)">
                     <i class="fas fa-share"></i> Partager
                 </button>
             </div>
@@ -160,9 +167,7 @@
             <!-- Comments -->
             <div class="comments-section" *ngIf="post.commentsOpen">
                 <div class="comment-item" *ngFor="let c of post.comments">
-                    <div class="c-av" [style.background]="c.authorAvatarBg" [style.color]="c.authorAvatarColor">{{
-                        c.authorInitials }}
-                    </div>
+                    <img class="c-av" [src]="getAvatarUrl(c.authorName)" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                     <div class="c-bubble">
                         <div class="c-name">{{ c.authorName }} <app-role-badge [role]="c.authorRole" /></div>
                         <p>{{ c.text }}</p>
@@ -174,10 +179,7 @@
                     </button>
                 </div>
                 <div class="comment-input-row">
-                    <div class="feed-av small" [style.background]="auth.currentUser()?.avatarBg"
-                        [style.color]="auth.currentUser()?.avatarColor">
-                        {{ auth.currentUser()?.initials }}
-                    </div>
+                    <img class="feed-av small" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                     <input type="text" class="c-input" [(ngModel)]="commentTexts[post.id]" placeholder="Commenter..."
                         (keyup.enter)="addComment(post.id)">
                     <button class="c-send" (click)="addComment(post.id)"><i class="fas fa-paper-plane"></i></button>
@@ -198,7 +200,7 @@
         <div class="sidebar-card">
             <div class="sidebar-title">Suggestions</div>
             <div class="suggest-item" *ngFor="let s of suggestions">
-                <div class="suggest-av" [style.background]="s.bg">{{ s.initials }}</div>
+                <img class="suggest-av" [src]="getAvatarUrl(s.name)" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
                 <div class="suggest-info">
                     <div class="suggest-name">{{ s.name }}</div>
                     <div class="suggest-role">{{ s.desc }}</div>

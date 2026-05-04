@@ -94,7 +94,7 @@ La base est pré-peuplée avec des données cohérentes (`DatabaseSeeder.java`).
 | Rôle | Nom | Email | Scénario de Test |
 | :--- | :--- | :--- | :--- |
 | **Direction** | Admin | `direction@enicar.ucar.tn` | Services administratifs, vue globale. |
-| **Enseignant** | Faouzi | `faouzi.jaidi@enicar.ucar.tn` | Publication officielle, gestion départements. |
+| **Enseignant** | Dhia | `dhia.jaidi@enicar.ucar.tn` | Publication officielle, gestion départements. |
 | **Étudiant (L)** | Jerbi | `mohamed.jerbi@enicar.ucar.tn` | Leader, Feed interactif, messagerie. |
 | **Étudiant (F)** | Babou | `mohamed.babou@enicar.ucar.tn` | Social Network, Feed, Messagerie STOMP. |
 | **Étudiant (P)** | Abidi | `mohamed-dhia.abidi@enicar.ucar.tn` | Réseau Pro, Mentorat, Offres d'emploi. |

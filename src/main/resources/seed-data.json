@@ -14,9 +14,9 @@
         },
         {
             "id": 2,
-            "firstName": "Faouzi",
+            "firstName": "Dhia",
             "lastName": "Jaidi",
-            "email": "teacher@enicar.ucar.tn",
+            "email": "dhia.jaidi@enicar.ucar.tn",
             "password": "password123",
             "role": "TEACHER",
             "department": "Génie Informatique",
@@ -92,14 +92,34 @@
         }
     ],
     "comments": [
-        { "postId": 1, "authorId": 1, "text": "Merci pour l'information, Monsieur !" },
-        { "postId": 2, "authorId": 2, "text": "Bienvenue parmi nous !" }
+        {
+            "postId": 1,
+            "authorId": 1,
+            "text": "Merci pour l'information, Monsieur !"
+        },
+        {
+            "postId": 2,
+            "authorId": 2,
+            "text": "Bienvenue parmi nous !"
+        }
     ],
     "likes": [
-        { "postId": 1, "userId": 1 },
-        { "postId": 1, "userId": 3 },
-        { "postId": 2, "userId": 2 },
-        { "postId": 3, "userId": 1 }
+        {
+            "postId": 1,
+            "userId": 1
+        },
+        {
+            "postId": 1,
+            "userId": 3
+        },
+        {
+            "postId": 2,
+            "userId": 2
+        },
+        {
+            "postId": 3,
+            "userId": 1
+        }
     ],
     "events": [
         {
@@ -157,7 +177,7 @@
             "location": "Labo Info 3, ENICAR",
             "description": "Workshop pratique pour apprendre à construire des APIs REST professionnelles avec Spring Boot 3. Niveau intermédiaire requis.",
             "category": "Académique",
-            "organizer": "Faouzi Jaidi",
+            "organizer": "dhia Jaidi",
             "color": "#C9A84C",
             "maxCapacity": 30,
             "ownerId": 2

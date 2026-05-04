@@ -38,10 +38,7 @@
         </button>
 
         <a routerLink="/account" routerLinkActive="active" class="account-btn" title="Mon compte">
-            <div class="account-av" [style.background]="auth.currentUser()?.avatarBg"
-                [style.color]="auth.currentUser()?.avatarColor">
-                {{ auth.currentUser()?.initials }}
-            </div>
+            <img class="account-av" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: 2px solid var(--border); padding: 0;" alt="Avatar">
         </a>
 
         <button class="nav-item logout-btn" (click)="auth.logout()">

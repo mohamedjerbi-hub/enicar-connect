@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = {"post", "author"})
+@ToString(exclude = {"post", "author"})
 public class Comment {
 
     @Id

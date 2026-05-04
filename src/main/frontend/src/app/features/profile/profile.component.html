@@ -10,10 +10,7 @@
             <div class="header-top">
                 <div>
                     <div class="p-avatar-wrap">
-                        <div class="p-avatar" [style.background]="auth.currentUser()?.avatarBg"
-                            [style.color]="auth.currentUser()?.avatarColor">
-                            {{ auth.currentUser()?.initials }}
-                        </div>
+                        <img class="p-avatar" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: 4px solid var(--bg-card); padding: 0;" alt="Avatar">
                         <div class="av-online"></div>
                     </div>
                     <div class="p-name">{{ auth.currentUser()?.fullName || auth.currentUser()?.name }}</div>
