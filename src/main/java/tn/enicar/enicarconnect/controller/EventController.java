@@ -26,6 +26,11 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAllEvents(resolveId(auth)));
     }
 
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<List<AppEventDTO>> getGroupEvents(@PathVariable Long groupId, Authentication auth) {
+        return ResponseEntity.ok(eventService.getGroupEvents(groupId, resolveId(auth)));
+    }
+
     @PostMapping
     public ResponseEntity<AppEventDTO> createEvent(@RequestBody AppEvent eventData, Authentication auth) {
         return ResponseEntity.ok(eventService.createEvent(eventData, resolveId(auth)));
@@ -50,7 +55,10 @@ public class EventController {
         return ResponseEntity.ok(eventService.toggleRegister(id, resolveId(auth)));
     }
 
-    /** Resolve the authenticated user ID from the security context email. O(1) DB index lookup. */
+    /**
+     * Resolve the authenticated user ID from the security context email. O(1) DB
+     * index lookup.
+     */
     private Long resolveId(Authentication auth) {
         return userRepo.findByEmail(auth.getName())
                 .map(User::getId)

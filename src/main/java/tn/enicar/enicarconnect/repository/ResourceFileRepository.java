@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ResourceFileRepository extends JpaRepository<ResourceFile, Long> {
     List<ResourceFile> findAllByOrderByUploadDateDesc();
+
+    List<ResourceFile> findAllByGroupId(Long groupId);
 }

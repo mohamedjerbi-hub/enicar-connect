@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tn.enicar.enicarconnect.dto.CreateGroupRequest;
 import tn.enicar.enicarconnect.dto.GroupDTO;
+import tn.enicar.enicarconnect.dto.GroupMemberDTO;
 import tn.enicar.enicarconnect.model.*;
 import tn.enicar.enicarconnect.repository.GroupMemberRepository;
 import tn.enicar.enicarconnect.repository.GroupRepository;
@@ -156,6 +157,26 @@ public class GroupService {
                 });
 
         return toDTO(group, userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupMemberDTO> getMembers(Long groupId) {
+        return memberRepo.findAllByGroupId(groupId).stream()
+                .map(m -> {
+                    User u = m.getUser();
+                    return GroupMemberDTO.builder()
+                            .id(m.getId())
+                            .userId(u.getId())
+                            .fullName(u.getFullName())
+                            .initials(u.getInitials())
+                            .role(u.getRole().name().toLowerCase())
+                            .memberRole(m.getMemberRole().name())
+                            .avatarBg(u.getAvatarBg())
+                            .avatarColor(u.getAvatarColor())
+                            .photoUrl(u.getPhotoUrl())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
     private GroupDTO toDTO(AppGroup group, Long currentUserId) {

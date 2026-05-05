@@ -46,6 +46,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         private final MentorshipRequestRepository mentorshipRequestRepository;
         private final EducationRepository educationRepository;
         private final ExperienceRepository experienceRepository;
+        private final ResourceFileRepository resourceFileRepository;
+        private final EventRepository eventRepository;
         private final PasswordEncoder passwordEncoder;
         private final TransactionTemplate transactionTemplate;
         private final AuthService authService;
@@ -62,6 +64,8 @@ public class DatabaseSeeder implements CommandLineRunner {
                         MentorshipRequestRepository mentorshipRequestRepository,
                         EducationRepository educationRepository,
                         ExperienceRepository experienceRepository,
+                        ResourceFileRepository resourceFileRepository,
+                        EventRepository eventRepository,
                         PasswordEncoder passwordEncoder,
                         PlatformTransactionManager platformTransactionManager,
                         AuthService authService) {
@@ -76,6 +80,8 @@ public class DatabaseSeeder implements CommandLineRunner {
                 this.mentorshipRequestRepository = mentorshipRequestRepository;
                 this.educationRepository = educationRepository;
                 this.experienceRepository = experienceRepository;
+                this.resourceFileRepository = resourceFileRepository;
+                this.eventRepository = eventRepository;
                 this.passwordEncoder = passwordEncoder;
                 this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
                 this.authService = authService;
@@ -171,7 +177,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                                 "youssef.hamdi@enicar.ucar.tn",
                                 "Étudiant en Informatique — APIs et front Angular.",
                                 "Informatique", "Promotion 2026", "2ème Info - Groupe A",
-                                skills("Java", "Angular", "MySQL", "REST API"));
+                                skills("Java", "Angular", "MySQL", "REST API"), null);
 
                 User studMariem = persistUser(PWD_ETUD, Role.STUDENT, "Mariem", "Sfar", "mariem.sfar@enicar.ucar.tn",
                                 "Étudiante en Informatique — DevOps et cloud.",
@@ -182,50 +188,52 @@ public class DatabaseSeeder implements CommandLineRunner {
                 User studAli = persistUser(PWD_ETUD, Role.STUDENT, "Ali", "Jebali", "ali.jebali@enicar.ucar.tn",
                                 "Étudiant en Informatique — data science appliquée.",
                                 "Informatique", "Promotion 2025", "3ème Info - Groupe B",
-                                skills("Python", "Machine Learning", "TensorFlow", "SQL", "Flask"));
+                                skills("Python", "Machine Learning", "TensorFlow", "SQL", "Flask"), null);
 
                 User studSarra = persistUser(PWD_ETUD, Role.STUDENT, "Sarra", "Mejri", "sarra.mejri@enicar.ucar.tn",
                                 "Étudiante en Informatique — première année cycle ingénieur.",
                                 "Informatique", "Promotion 2027", "1ère Info - Groupe A",
-                                skills("HTML", "CSS", "JavaScript", "Git"));
+                                skills("HTML", "CSS", "JavaScript", "Git"), null);
 
                 User studOmar = persistUser(PWD_ETUD, Role.STUDENT, "Omar", "Zouari", "omar.zouari@enicar.ucar.tn",
                                 "Étudiant en Mécanique — conception et dessin de projet.",
                                 "Mécanique", "Promotion 2026", "2ème Méca - Groupe A",
-                                skills("AutoCAD", "SolidWorks", "CATIA", "Excel", "MATLAB"));
+                                skills("AutoCAD", "SolidWorks", "CATIA", "Excel", "MATLAB"), null);
 
                 User studNour = persistUser(PWD_ETUD, Role.STUDENT, "Nour", "Baccar", "nour.baccar@enicar.ucar.tn",
                                 "Étudiante en Mécatronique — systèmes embarqués.",
                                 "Mécatronique", "Promotion 2026", "2ème Mécat - Groupe B",
-                                skills("MATLAB", "Simulink", "C++", "Arduino", "SolidWorks"));
+                                skills("MATLAB", "Simulink", "C++", "Arduino", "SolidWorks"), null);
 
                 User studBilel = persistUser(PWD_ETUD, Role.STUDENT, "Bilel", "Farhat", "bilel.farhat@enicar.ucar.tn",
                                 "Étudiant en Informatique — stack Java / Angular et déploiement.",
                                 "Informatique", "Promotion 2025", "3ème Info - Groupe A",
-                                skills("Java", "Spring Boot", "Angular", "Docker", "Git", "PostgreSQL", "REST API"));
+                                skills("Java", "Spring Boot", "Angular", "Docker", "Git", "PostgreSQL", "REST API"),
+                                null);
 
                 User studRania = persistUser(PWD_ETUD, Role.STUDENT, "Rania", "Chaker", "rania.chaker@enicar.ucar.tn",
                                 "Étudiante en Informatique — bases Python et web.",
                                 "Informatique", "Promotion 2027", "1ère Info - Groupe B",
-                                skills("Python", "HTML", "CSS", "Git"));
+                                skills("Python", "HTML", "CSS", "Git"), null);
 
                 // --- Alumni ---
                 User alumHatem = persistUser(PWD_ALUMNI, Role.ALUMNI, "Hatem", "Bouaziz", "hatem.bouaziz@gmail.com",
                                 "Diplômé promo 2020 — Senior Java Developer chez Vermeg Tunisie (Lac 2).",
-                                "Génie Informatique", null, null, skills("Java", "Spring Boot", "Microservices"));
+                                "Génie Informatique", null, null, skills("Java", "Spring Boot", "Microservices"), null);
 
                 User alumLeila = persistUser(PWD_ALUMNI, Role.ALUMNI, "Leila", "Maaroufi", "leila.maaroufi@gmail.com",
                                 "Diplômée promo 2019 — Tech Lead Angular chez Telnet Holding (Centre urbain Nord).",
                                 "Génie Informatique", null, null,
-                                skills("Angular", "TypeScript", "RxJS", "Architecture front"));
+                                skills("Angular", "TypeScript", "RxJS", "Architecture front"), null);
 
                 User alumMalek = persistUser(PWD_ALUMNI, Role.ALUMNI, "Malek", "Dridi", "malek.dridi@gmail.com",
                                 "Diplômé promo 2021 — DevOps Engineer chez Sofrecom Tunisie.",
-                                "Génie Informatique", null, null, skills("Docker", "Kubernetes", "CI/CD", "GitLab"));
+                                "Génie Informatique", null, null, skills("Docker", "Kubernetes", "CI/CD", "GitLab"),
+                                null);
 
                 User alumAnis = persistUser(PWD_ALUMNI, Role.ALUMNI, "Anis", "Haddad", "anis.haddad@gmail.com",
                                 "Diplômé promo 2018 — Data Engineer chez BIAT Digital.",
-                                "Génie Informatique", null, null, skills("Python", "SQL", "Spark", "ETL"));
+                                "Génie Informatique", null, null, skills("Python", "SQL", "Spark", "ETL"), null);
 
                 List<User> allSeeded = Arrays.asList(
                                 adminSami, directionNadia, profJaidi, profBedoui, profBenSlimen, profYaich,
@@ -443,6 +451,62 @@ public class DatabaseSeeder implements CommandLineRunner {
                                 .tags("cao,solids,meca,stage")
                                 .author(profBenSlimen)
                                 .requiredSkills(requiredSkillsSet("CAO", "SolidWorks", "AutoCAD"))
+                                .build());
+
+                // --- Dynamisation des Groupes (Membres, Ressources, Evénements) ---
+                // Membres pour 2ème Info - Groupe C
+                addMembership(classe2InfoC, studBabou, MemberRole.MODERATOR);
+                addMembership(classe2InfoC, studAbidi, MemberRole.MEMBER);
+                addMembership(classe2InfoC, studMariem, MemberRole.MEMBER);
+                addMembership(classe2InfoC, studInes, MemberRole.MEMBER);
+
+                // Ressources
+                resourceFileRepository.save(ResourceFile.builder()
+                                .title("Support de cours UML - Diagrammes de Séquence")
+                                .category("Cours")
+                                .icon("fas fa-file-pdf")
+                                .fileSize("1.2 MB")
+                                .filePath("uml_sequence.pdf")
+                                .author(profJaidi)
+                                .group(classe2InfoC)
+                                .build());
+
+                resourceFileRepository.save(ResourceFile.builder()
+                                .title("TD1 Corrigé - Algorithmique Avancée")
+                                .category("Exercices")
+                                .icon("fas fa-file-word")
+                                .fileSize("850 KB")
+                                .filePath("td1_algo.docx")
+                                .author(profBedoui)
+                                .group(classe2InfoC)
+                                .build());
+
+                // Evénements
+                eventRepository.save(AppEvent.builder()
+                                .title("Hackathon Innovation ENICAR")
+                                .date("2026-05-15")
+                                .time("09:00")
+                                .location("Amphi A - ENICAR")
+                                .description("Challenge de 24h pour créer des solutions durables.")
+                                .category("Innovation")
+                                .organizer("Club Innovation")
+                                .color("var(--role-prof)")
+                                .owner(studJerbi)
+                                .group(groupRepository.findByNameIgnoreCase("Innovation & Entrepreneuriat")
+                                                .orElse(null))
+                                .build());
+
+                eventRepository.save(AppEvent.builder()
+                                .title("Réunion Coordination PFE 2026")
+                                .date("2026-05-20")
+                                .time("14:30")
+                                .location("Salle de réunion 1")
+                                .description("Session d'information sur les procédures de dépôt de PFE.")
+                                .category("Administration")
+                                .organizer("Direction")
+                                .color("var(--role-direction)")
+                                .owner(directionNadia)
+                                .group(groupRepository.findByNameIgnoreCase("Stages & PFE").orElse(null))
                                 .build());
 
                 jobOfferRepository.save(JobOffer.builder()

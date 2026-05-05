@@ -42,8 +42,15 @@ public class ResourceController {
             @RequestParam("category") String category,
             @RequestParam("icon") String icon,
             @RequestParam("size") String size,
+            @RequestParam(value = "groupId", required = false) Long groupId,
             Authentication auth) {
-        return ResponseEntity.ok(resourceService.uploadResource(file, title, category, icon, size, resolveId(auth)));
+        return ResponseEntity
+                .ok(resourceService.uploadResource(file, title, category, icon, size, resolveId(auth), groupId));
+    }
+
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<List<ResourceDTO>> getGroupResources(@PathVariable Long groupId, Authentication auth) {
+        return ResponseEntity.ok(resourceService.getGroupResources(groupId, resolveId(auth)));
     }
 
     @DeleteMapping("/{id}")
@@ -71,7 +78,10 @@ public class ResourceController {
         }
     }
 
-    /** Resolve the authenticated user ID from the security context email. O(1) DB index lookup. */
+    /**
+     * Resolve the authenticated user ID from the security context email. O(1) DB
+     * index lookup.
+     */
     private Long resolveId(Authentication auth) {
         return userRepo.findByEmail(auth.getName())
                 .map(User::getId)

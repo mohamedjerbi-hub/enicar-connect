@@ -63,4 +63,8 @@ export class EventService {
             })
         ).subscribe();
     }
+
+    getGroupEvents(groupId: number): Observable<AppEvent[]> {
+        return this.http.get<AppEvent[]>(`${this.API}/group/${groupId}`);
+    }
 }

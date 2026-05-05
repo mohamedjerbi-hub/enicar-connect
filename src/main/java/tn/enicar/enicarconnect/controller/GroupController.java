@@ -63,6 +63,11 @@ public class GroupController {
         return ResponseEntity.ok(groupService.toggleJoin(id, userId));
     }
 
+    @GetMapping("/{id}/members")
+    public ResponseEntity<List<tn.enicar.enicarconnect.dto.GroupMemberDTO>> getMembers(@PathVariable Long id) {
+        return ResponseEntity.ok(groupService.getMembers(id));
+    }
+
     private Long getUserId(Authentication auth) {
         String email = auth.getName();
         User user = userRepo.findByEmail(email)

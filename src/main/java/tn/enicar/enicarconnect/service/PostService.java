@@ -65,6 +65,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    public List<PostDTO> getGroupPosts(Long userId, Long groupId) {
+        User currentUser = userId != null ? userRepo.findById(userId).orElse(null) : null;
+        return postRepo.findByGroupIdOrderByCreatedAtDesc(groupId).stream()
+                .map(p -> toDTO(p, currentUser))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public PostDTO getPost(Long postId, Long currentUserId) {
         User currentUser = currentUserId != null ? userRepo.findById(currentUserId).orElse(null) : null;
         Post post = postRepo.findById(postId)
