@@ -67,16 +67,26 @@ export class AuthService {
         }
     }
 
-    async login(email: string, password: string): Promise<boolean> {
+    async login(email: string, password: string): Promise<{ success: boolean; errorMessage?: string }> {
         try {
             const res = await this.http.post<AuthResponse>(`${this.API}/login`, { email, password }).toPromise();
             if (res && res.token) {
                 this.handleAuthResponse(res);
-                return true;
+                return { success: true };
             }
-            return false;
-        } catch {
-            return false;
+            return { success: false, errorMessage: 'Réponse invalide du serveur (aucun token).' };
+        } catch (error: any) {
+            console.error("LOGIN ERROR", error);
+            if (error?.status === 0) {
+                return { success: false, errorMessage: `Erreur 0: Impossible de se connecter au serveur backend. L'URL (${this.API}) est introuvable ou le CORS refuse la connexion.` };
+            }
+            if (error?.status === 401 || error?.status === 403) {
+                return { success: false, errorMessage: `Erreur ${error.status}: Email ou mot de passe incorrect.` };
+            }
+            if (error?.status === 500) {
+                return { success: false, errorMessage: 'Erreur 500: Le backend a craché lors de la vérification.' };
+            }
+            return { success: false, errorMessage: `Erreur inconnue (Status: ${error?.status || 'N/A'}) - ${error?.message}` };
         }
     }
 

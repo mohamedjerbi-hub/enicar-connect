@@ -20,8 +20,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         // Erreur côté serveur
         switch (error.status) {
           case 401:
-            errorMessage = 'Session expirée ou non autorisée. Veuillez vous reconnecter.';
-            auth.logout();
+            if (!req.url.includes('/auth/login')) {
+              errorMessage = 'Session expirée ou non autorisée. Veuillez vous reconnecter.';
+              auth.logout();
+            }
             break;
           case 403:
             errorMessage = 'Accès refusé.';
