@@ -24,6 +24,12 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    public List<AppEventDTO> getGroupEvents(Long groupId, Long currentUserId) {
+        return eventRepository.findByGroupIdOrderByDateAsc(groupId).stream()
+                .map(event -> mapToDTO(event, currentUserId))
+                .collect(Collectors.toList());
+    }
+
     public AppEventDTO createEvent(AppEvent eventData, Long currentUserId) {
         User currentUser = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

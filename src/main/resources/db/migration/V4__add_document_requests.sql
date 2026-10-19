@@ -1,5 +1,5 @@
 -- V2__add_document_requests.sql
-CREATE TABLE IF NOT EXISTS document_requests (
+CREATE TABLE IF NOT EXISTS document_request (
     id            BIGSERIAL PRIMARY KEY,
     request_type  VARCHAR(50) NOT NULL,
     status        VARCHAR(30) NOT NULL DEFAULT 'PENDING',

@@ -27,12 +27,12 @@ export class LoginComponent {
     this.error = '';
     this.loading = true;
 
-    const success = await this.auth.login(this.email, this.password);
+    const result = await this.auth.login(this.email, this.password);
 
-    if (success) {
+    if (result.success) {
       this.router.navigate(['/feed']);
     } else {
-      this.error = 'Email ou mot de passe incorrect. Veuillez réessayer.';
+      this.error = result.errorMessage ?? 'Email ou mot de passe incorrect (valeur par défaut).';
     }
 
     this.loading = false;

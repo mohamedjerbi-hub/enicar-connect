@@ -38,6 +38,12 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPosts(userId));
     }
 
+    @GetMapping("/groups/{groupId}/posts")
+    public ResponseEntity<List<PostDTO>> getGroupPosts(@PathVariable Long groupId, Authentication auth) {
+        Long userId = getUserId(auth);
+        return ResponseEntity.ok(postService.getGroupPosts(userId, groupId));
+    }
+
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostDTO> getPost(@PathVariable Long id, Authentication auth) {
         Long userId = getUserId(auth);

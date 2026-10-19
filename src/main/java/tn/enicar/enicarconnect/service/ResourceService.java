@@ -30,7 +30,7 @@ public class ResourceService {
     }
 
     public ResourceDTO uploadResource(MultipartFile file, String title, String category, String icon, String size,
-            Long currentUserId) {
+            Long currentUserId, Long groupId) {
         User author = userRepository.findById(currentUserId).orElseThrow(() -> new RuntimeException("User not found"));
 
         // Sauvegarde physique du fichier
@@ -43,10 +43,17 @@ public class ResourceService {
                 .fileSize(size)
                 .filePath(storedFileName) // on garde juste le nom pour le retrouver
                 .author(author)
+                .group(groupId != null ? tn.enicar.enicarconnect.model.AppGroup.builder().id(groupId).build() : null)
                 .build();
 
         ResourceFile saved = resourceRepository.save(resource);
         return mapToDTO(saved, currentUserId);
+    }
+
+    public List<ResourceDTO> getGroupResources(Long groupId, Long currentUserId) {
+        return resourceRepository.findAllByGroupId(groupId).stream()
+                .map(r -> mapToDTO(r, currentUserId))
+                .collect(Collectors.toList());
     }
 
     public void deleteResource(Long id, Long currentUserId) {

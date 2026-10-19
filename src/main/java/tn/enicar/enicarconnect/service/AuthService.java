@@ -71,6 +71,15 @@ public class AuthService {
     }
 
     /**
+     * Réutilisé par {@link tn.enicar.enicarconnect.config.DatabaseSeeder} pour
+     * aligner le seed
+     * sur les mêmes groupes par défaut qu'à l'inscription.
+     */
+    public void ensureDefaultGroupsForSeed(User user) {
+        assignDefaultGroups(user);
+    }
+
+    /**
      * Connexion par email / mot de passe.
      */
     public AuthResponse login(LoginRequest request) {
@@ -122,10 +131,29 @@ public class AuthService {
                 .level(user.getLevel())
                 .initials(user.getInitials())
                 .fullName(user.getFullName())
-                .avatarColor(user.getAvatarColor())
                 .avatarBg(user.getAvatarBg())
+                .photoUrl(user.getPhotoUrl())
                 .skills(user.getSkills())
                 .permissions(rolePermissionConfig.getPermissionNames(user.getRole()))
+                .experiences(user.getExperiences() != null ? user.getExperiences().stream()
+                        .map(e -> ExperienceDTO.builder()
+                                .id(e.getId())
+                                .title(e.getTitle())
+                                .company(e.getCompany())
+                                .period(e.getPeriod())
+                                .description(e.getDescription())
+                                .icon(e.getIcon())
+                                .build())
+                        .toList() : null)
+                .educations(user.getEducations() != null ? user.getEducations().stream()
+                        .map(e -> EducationDTO.builder()
+                                .id(e.getId())
+                                .degree(e.getDegree())
+                                .school(e.getSchool())
+                                .period(e.getPeriod())
+                                .icon(e.getIcon())
+                                .build())
+                        .toList() : null)
                 .build();
     }
 
@@ -165,8 +193,7 @@ public class AuthService {
             AppGroup admin = groupService.ensureDefaultGroup(
                     "Administration",
                     "Groupe par défaut pour le personnel administratif et la direction.",
-                    user
-            );
+                    user);
             groupService.addUserToGroup(admin, user, MemberRole.MEMBER);
             return;
         }
@@ -175,8 +202,7 @@ public class AuthService {
             AppGroup teachers = groupService.ensureDefaultGroup(
                     "Corps Enseignant",
                     "Groupe par défaut réservé aux enseignants.",
-                    user
-            );
+                    user);
             groupService.addUserToGroup(teachers, user, MemberRole.MEMBER);
             return;
         }
@@ -188,8 +214,7 @@ public class AuthService {
             AppGroup classGroup = groupService.ensureDefaultGroup(
                     "Classe " + className,
                     "Groupe de classe créé automatiquement lors de l'inscription.",
-                    user
-            );
+                    user);
             groupService.addUserToGroup(classGroup, user, MemberRole.MEMBER);
         }
     }

@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import tn.enicar.enicarconnect.dto.MentorshipDTO;
 import tn.enicar.enicarconnect.dto.UserDTO;
 import tn.enicar.enicarconnect.model.MentorshipRequest;
+import tn.enicar.enicarconnect.model.ChatMessage;
 import tn.enicar.enicarconnect.model.Role;
 import tn.enicar.enicarconnect.model.User;
+import tn.enicar.enicarconnect.repository.ChatMessageRepository;
 import tn.enicar.enicarconnect.repository.MentorshipRequestRepository;
 import tn.enicar.enicarconnect.repository.UserRepository;
 
@@ -21,6 +23,7 @@ public class MentorshipService {
 
     private final MentorshipRequestRepository mentorshipRepo;
     private final UserRepository userRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     // Lister les mentors disponibles
     public List<UserDTO> getAvailableMentors() {
@@ -58,6 +61,18 @@ public class MentorshipService {
                 .build();
 
         MentorshipRequest saved = mentorshipRepo.save(request);
+
+        // Envoyer un message automatique au mentor
+        ChatMessage autoMsg = ChatMessage.builder()
+                .senderId(mentee.getId())
+                .recipientId(mentor.getId())
+                .content("Bonjour " + mentor.getFirstName()
+                        + ", j'aimerais solliciter votre mentorat pour l'objectif : " + objective)
+                .isRead(false)
+                .timestamp(java.time.LocalDateTime.now())
+                .build();
+        chatMessageRepository.save(autoMsg);
+
         return mapToDTO(saved, currentUserId);
     }
 
@@ -116,9 +131,12 @@ public class MentorshipService {
         return MentorshipDTO.builder()
                 .id(r.getId())
                 .partnerId(partner.getId())
-                .partnerName(partner.getFullName())
+                .partnerName(partner.getFirstName() + " " + partner.getLastName())
                 .partnerRole(partner.getRole().name())
                 .partnerDepartment(partner.getDepartment() != null ? partner.getDepartment() : "ENICAR")
+                .partnerPhotoUrl(partner.getPhotoUrl())
+                .partnerAvatarBg(partner.getAvatarBg())
+                .partnerAvatarColor(partner.getAvatarColor())
                 .objective(r.getObjective())
                 .status(r.getStatus())
                 .date(r.getCreatedAt() != null ? r.getCreatedAt().format(formatter) : "")

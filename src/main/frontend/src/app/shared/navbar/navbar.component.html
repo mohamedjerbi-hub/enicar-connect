@@ -38,7 +38,16 @@
         </button>
 
         <a routerLink="/account" routerLinkActive="active" class="account-btn" title="Mon compte">
-            <img class="account-av" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: 2px solid var(--border); padding: 0;" alt="Avatar">
+            @if (auth.currentUser()?.photoUrl) {
+            <img class="account-av" [src]="auth.currentUser()?.photoUrl"
+                style="object-fit: cover; border: 2px solid var(--border); padding: 0;" alt="Avatar">
+            } @else {
+            <div class="account-av" [style.background]="auth.currentUser()?.avatarBg"
+                [style.color]="auth.currentUser()?.avatarColor"
+                style="display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; border: 2px solid var(--border);">
+                {{ auth.currentUser()?.initials }}
+            </div>
+            }
         </a>
 
         <button class="nav-item logout-btn" (click)="auth.logout()">

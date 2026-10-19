@@ -11,11 +11,15 @@ import { GroupMessage } from '../../../core/models/group-message.model';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 import { ParticlesBgComponent } from '../../../shared/particles-bg/particles-bg.component';
 import { RoleBadgeComponent } from '../../../shared/role-badge/role-badge.component';
+import { ResourceService } from '../../../core/services/resource.service';
+import { EventService } from '../../../core/services/event.service';
+import { Resource } from '../../../core/models/resource.model';
+import { AppEvent } from '../../../core/models/event.model';
 
 @Component({
     selector: 'app-group-detail',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink, NavbarComponent, ParticlesBgComponent, RoleBadgeComponent],
+    imports: [CommonModule, FormsModule, NavbarComponent, ParticlesBgComponent, RoleBadgeComponent],
     templateUrl: './group-detail.component.html',
     styleUrl: './group-detail.component.css'
 })
@@ -24,6 +28,8 @@ export class GroupDetailComponent implements OnInit {
     private groupSvc = inject(GroupService);
     private postSvc = inject(PostService);
     private groupMsgSvc = inject(GroupMessageService);
+    private resSvc = inject(ResourceService);
+    private evSvc = inject(EventService);
 
     group: Group | null = null;
     posts: Post[] = [];
@@ -32,6 +38,9 @@ export class GroupDetailComponent implements OnInit {
     messages: GroupMessage[] = [];
     messageText = '';
     loadingMessages = false;
+    members: any[] = [];
+    resources: Resource[] = [];
+    events: AppEvent[] = [];
 
     ngOnInit(): void {
         const id = this.route.snapshot.params['id'];
@@ -43,6 +52,9 @@ export class GroupDetailComponent implements OnInit {
         });
         this.postSvc.loadPosts();
         this.loadMessages();
+        this.loadMembers();
+        this.loadResources();
+        this.loadEvents();
     }
 
     setTab(tab: string): void {
@@ -88,6 +100,21 @@ export class GroupDetailComponent implements OnInit {
                 this.scrollMessagesToBottom();
             }
         });
+    }
+
+    loadMembers(): void {
+        const id = this.route.snapshot.params['id'];
+        this.groupSvc.getMembers(+id).subscribe(members => this.members = members);
+    }
+
+    loadResources(): void {
+        const id = this.route.snapshot.params['id'];
+        this.resSvc.getGroupResources(+id).subscribe(res => this.resources = res);
+    }
+
+    loadEvents(): void {
+        const id = this.route.snapshot.params['id'];
+        this.evSvc.getGroupEvents(+id).subscribe(evs => this.events = evs);
     }
 
     private scrollMessagesToBottom(): void {

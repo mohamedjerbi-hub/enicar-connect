@@ -16,8 +16,12 @@
         <div class="users-list">
             <div class="user-item" *ngFor="let c of filteredConversations" [class.active]="activeConv?.id === c.id"
                 (click)="selectConv(c)">
-                <div class="user-avatar" style="background: none; border: none;">
-                    <img [src]="'assets/images/demo/avatar' + ((c.id || 2) % 5 + 1) + '.jpg'" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Avatar">
+                <div class="user-avatar" [style.background]="c.avatarBg" [style.color]="c.avatarColor">
+                    <img *ngIf="c.photoUrl" [src]="c.photoUrl"
+                        style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Avatar">
+                    <span *ngIf="!c.photoUrl"
+                        style="display:flex;align-items:center;justify-content:center;height:100%;font-weight:600">{{
+                        c.initials }}</span>
                     <span class="status-dot"></span>
                 </div>
                 <div class="user-info">
@@ -35,8 +39,13 @@
     <main class="chat-area">
         <ng-container *ngIf="activeConv; else emptyState">
             <div class="chat-header">
-                <div class="user-avatar" style="background: none; border: none;">
-                    <img [src]="'assets/images/demo/avatar' + ((activeConv.id || 2) % 5 + 1) + '.jpg'" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Avatar">
+                <div class="user-avatar" [style.background]="activeConv.avatarBg"
+                    [style.color]="activeConv.avatarColor">
+                    <img *ngIf="activeConv.photoUrl" [src]="activeConv.photoUrl"
+                        style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" alt="Avatar">
+                    <span *ngIf="!activeConv.photoUrl"
+                        style="display:flex;align-items:center;justify-content:center;height:100%;font-weight:600">{{
+                        activeConv.initials }}</span>
                     <span class="status-dot"></span>
                 </div>
                 <div class="header-info">
@@ -44,6 +53,11 @@
                     <span class="status-text">En ligne</span>
                 </div>
                 <div class="header-actions">
+                    @if (activeConv.id === 5) {
+                    <button class="btn-mentor-active" title="Mentor Validé (ENICAR)">
+                        <i class="fas fa-certificate" style="color:var(--gold)"></i>
+                    </button>
+                    }
                     <button><i class="fas fa-phone-alt"></i></button>
                     <button><i class="fas fa-video"></i></button>
                     <button><i class="fas fa-info-circle"></i></button>
@@ -55,7 +69,15 @@
                     <div class="message-bubble-wrapper" *ngFor="let m of activeMessages"
                         [class.me]="m.senderId === myId" [class.them]="m.senderId !== myId">
 
-                        <img class="bubble-avatar" *ngIf="m.senderId !== myId" [src]="'assets/images/demo/avatar' + ((activeConv.id || 2) % 5 + 1) + '.jpg'" style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
+                        <div class="bubble-avatar-wrap" *ngIf="m.senderId !== myId">
+                            <img *ngIf="activeConv.photoUrl" class="bubble-avatar" [src]="activeConv.photoUrl"
+                                style="object-fit: cover; border: none; padding: 0;" alt="Avatar">
+                            <div *ngIf="!activeConv.photoUrl" class="bubble-avatar"
+                                [style.background]="activeConv.avatarBg" [style.color]="activeConv.avatarColor"
+                                style="display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:600;font-size:0.7rem">
+                                {{ activeConv.initials }}
+                            </div>
+                        </div>
 
                         <div class="message-bubble">
                             <p class="message-text">{{ m.content }}</p>

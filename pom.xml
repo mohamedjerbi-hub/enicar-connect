@@ -61,12 +61,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- Flyway — schema versioning for PostgreSQL -->
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -119,6 +113,18 @@
         </dependency>
 
         <!-- Cucumber BDD (Behavior-Driven Development) -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- AOP -->
+        <!-- AOP -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -187,6 +193,7 @@
                     <skip>${frontend.skip}</skip>
                 </configuration>
                 <executions>
+<!--
                     <execution>
                         <id>install node and npm</id>
                         <goals>
@@ -211,9 +218,10 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>run build -- --configuration production</arguments>
+                            <arguments>run build</arguments>
                         </configuration>
                     </execution>
+-->
                 </executions>
             </plugin>
 

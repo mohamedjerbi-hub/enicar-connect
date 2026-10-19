@@ -17,13 +17,13 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final RolePermissionConfig rolePermissionConfig;
+        private final UserRepository userRepository;
+        private final RolePermissionConfig rolePermissionConfig;
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable : " + email));
+        @Override
+        public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+                User user = userRepository.findByEmail(email)
+                                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable : " + email));
 
         // Combine ROLE_xxx + individual permissions as authorities
         List<SimpleGrantedAuthority> auths = Stream.concat(
@@ -35,5 +35,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setAuthorities(auths);
 
         return user;
-    }
+        }
 }

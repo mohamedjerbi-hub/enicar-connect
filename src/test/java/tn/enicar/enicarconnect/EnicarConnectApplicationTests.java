@@ -3,10 +3,11 @@ package tn.enicar.enicarconnect;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import tn.enicar.enicarconnect.support.AbstractPostgresIntegrationTest;
 
 @SpringBootTest
-@ActiveProfiles("test")
-class EnicarConnectApplicationTests {
+@ActiveProfiles({"test", "postgres"})
+class EnicarConnectApplicationTests extends AbstractPostgresIntegrationTest {
 
     @Test
     void contextLoads() {

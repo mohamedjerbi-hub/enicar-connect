@@ -36,6 +36,10 @@ public class ResourceFile {
     @Column(nullable = false)
     private String icon;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private AppGroup group;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime uploadDate;

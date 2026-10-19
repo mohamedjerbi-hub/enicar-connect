@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<AppEvent, Long> {
     List<AppEvent> findAllByOrderByDateAscTimeAsc();
+
+    List<AppEvent> findByGroupIdOrderByDateAsc(Long groupId);
 }

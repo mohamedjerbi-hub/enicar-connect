@@ -12,6 +12,9 @@ export interface MentorshipDTO {
     objective: string;
     status: string; // PENDING, ACTIVE, COMPLETED, REJECTED
     date: string;
+    partnerPhotoUrl?: string;
+    partnerAvatarBg?: string;
+    partnerAvatarColor?: string;
 }
 
 export interface MentorDTO {
@@ -20,6 +23,9 @@ export interface MentorDTO {
     lastName: string;
     role: string;
     department: string;
+    photoUrl?: string;
+    avatarBg?: string;
+    avatarColor?: string;
 }
 
 @Injectable({ providedIn: 'root' })

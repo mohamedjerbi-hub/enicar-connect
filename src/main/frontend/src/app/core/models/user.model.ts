@@ -13,11 +13,17 @@ export interface User {
     location: string;
     avatarColor: string;
     avatarBg: string;
+    department?: string;
+    level?: string;
+    bio?: string;
     skills?: string[];
     connections: number;
     groups: number;
     projects: number;
     permissions?: string[];
+    photoUrl?: string;
+    experiences?: any[];
+    educations?: any[];
 }
 
 export const ROLE_META: Record<Role, { label: string; icon: string; cls: string }> = {

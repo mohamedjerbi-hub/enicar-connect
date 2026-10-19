@@ -10,13 +10,19 @@
             <div class="header-top">
                 <div>
                     <div class="p-avatar-wrap">
-                        <img class="p-avatar" src="assets/images/demo/avatar1.jpg" style="object-fit: cover; border: 4px solid var(--bg-card); padding: 0;" alt="Avatar">
+                        <img *ngIf="user?.photoUrl" class="p-avatar" [src]="user?.photoUrl"
+                            style="object-fit: cover; border: 4px solid var(--bg-card); padding: 0;" alt="Avatar">
+                        <div *ngIf="!user?.photoUrl" class="p-avatar" [style.background]="user?.avatarBg"
+                            [style.color]="user?.avatarColor"
+                            style="display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; border: 4px solid var(--bg-card);">
+                            {{ user?.initials }}
+                        </div>
                         <div class="av-online"></div>
                     </div>
-                    <div class="p-name">{{ auth.currentUser()?.fullName || auth.currentUser()?.name }}</div>
-                    <div class="p-role">{{ auth.currentUser()?.title }}</div>
-                    <div class="p-location"><i class="fas fa-map-marker-alt"></i> {{ auth.currentUser()?.location ||
-                        'Tunis, Tunisie' }}</div>
+                    <div class="p-name">{{ user?.fullName || user?.name }}</div>
+                    <div class="p-role">{{ user?.role | titlecase }} · {{ user?.department }}</div>
+                    <div class="p-location"><i class="fas fa-map-marker-alt"></i> {{ user?.location || 'Tunis, Tunisie'
+                        }}</div>
                 </div>
                 <div class="action-row">
                     <button class="btn-primary" (click)="toast.show('fas fa-user-plus','Demande envoyée !')">
@@ -45,8 +51,8 @@
             <!-- About -->
             <div class="card card-body">
                 <div class="sec-title"><i class="fas fa-info-circle"></i> À propos</div>
-                <p class="about-text">Étudiant passionné en 2ème année de Génie Informatique à l'ENI Carthage,
-                    spécialisé dans le développement d'applications sécurisées et l'architecture logicielle.</p>
+                <p class="about-text">{{ user?.bio || 'Étudiant passionné en Génie Informatique à l\'ENI Carthage.' }}
+                </p>
             </div>
 
             <!-- Experience -->

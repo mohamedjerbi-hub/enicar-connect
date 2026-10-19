@@ -48,9 +48,23 @@
                         <button class="btn-post" (click)="postText()">Publier</button>
                     </div>
                 </div>
-                <div class="empty-state">
+                <div class="empty-state" *ngIf="posts.length === 0">
                     <i class="fas fa-stream"></i>
-                    <p>Le fil d'actualités du groupe sera bientôt disponible avec les données réelles.</p>
+                    <p>Aucune publication dans ce groupe pour le moment. Soyez le premier à publier !</p>
+                </div>
+                <div class="posts-list" *ngIf="posts.length > 0">
+                    <div class="card post" *ngFor="let p of posts" style="margin-top: 1rem;">
+                        <div class="post-header">
+                            <img [src]="p.authorPhoto || 'assets/images/demo/avatar' + ((p.id || 1) % 5 + 1) + '.jpg'" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px;">
+                            <div>
+                                <h4 style="margin: 0; font-size: 1rem;">{{ p.authorName }}</h4>
+                                <small style="color: var(--text-muted);">{{ p.createdAt | date:'short' }}</small>
+                            </div>
+                        </div>
+                        <div class="post-body" style="padding: 1rem 0;">
+                            {{ p.body }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -94,9 +108,69 @@
                 </div>
             </div>
 
-            <div *ngIf="activeTab!=='feed' && activeTab!=='messages'" class="empty-state fade-in">
-                <i class="fas fa-tools"></i>
-                <p>Module <strong>{{ activeTab }}</strong> en cours de développement.</p>
+            <!-- Members Tab -->
+            <div *ngIf="activeTab==='members'" class="fade-in">
+                <div class="card">
+                    <div class="list-group">
+                        <div class="list-item" *ngFor="let m of members" style="display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                            <img [src]="m.photoUrl || 'assets/images/demo/avatar' + ((m.userId || 1) % 5 + 1) + '.jpg'" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-right: 1rem;">
+                            <div style="flex-grow: 1;">
+                                <h4 style="margin: 0;">{{ m.fullName }}</h4>
+                                <small style="color: var(--text-muted);">{{ m.role | titlecase }}</small>
+                            </div>
+                            <app-role-badge [role]="m.memberRole" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div *ngIf="activeTab==='resources'" class="fade-in">
+                <div class="card">
+                    <div class="list-group">
+                        <div class="list-item" *ngFor="let r of resources" style="display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                            <i [class]="r.icon || 'fas fa-file'" style="font-size: 1.5rem; margin-right: 1rem; color: var(--primary);"></i>
+                            <div style="flex-grow: 1;">
+                                <h4 style="margin: 0;">{{ r.title }}</h4>
+                                <small style="color: var(--text-muted);">Partagé par {{ r.author }} le {{ r.date }} ({{ r.size }})</small>
+                            </div>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-download"></i></button>
+                        </div>
+                        <div class="empty-state" *ngIf="resources.length === 0">
+                            <i class="fas fa-folder-open"></i>
+                            <p>Aucune ressource partagée dans ce groupe.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Tab -->
+            <div *ngIf="activeTab==='events'" class="fade-in">
+                <div class="card">
+                    <div class="list-group">
+                        <div class="list-item" *ngFor="let e of events" style="padding: 1.2rem; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; align-items: flex-start;">
+                                <div style="background: var(--card-bg); border: 2px solid; border-color: inherit; border-radius: 8px; padding: 0.5rem; text-align: center; min-width: 60px; margin-right: 1.2rem;" [style.border-color]="e.color">
+                                    <div style="font-weight: bold; font-size: 1.2rem; display: block;">{{ e.date | date:'dd' }}</div>
+                                    <div style="font-size: 0.8rem; text-transform: uppercase;">{{ e.date | date:'MMM' }}</div>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <h4 style="margin: 0 0 0.4rem 0;">{{ e.title }}</h4>
+                                    <p style="font-size: 0.9rem; margin-bottom: 0.6rem;">{{ e.description }}</p>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                        <i class="fas fa-clock"></i> {{ e.time }} &nbsp;&nbsp;
+                                        <i class="fas fa-map-marker-alt"></i> {{ e.location }}
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm" style="align-self: center;">Rejoindre</button>
+                            </div>
+                        </div>
+                        <div class="empty-state" *ngIf="events.length === 0">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>Aucun événement prévu pour ce groupe.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

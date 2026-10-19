@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: '/api',
-  wsUrl: '/ws'
+  // Connexion au backend hébergé sur Render
+  apiUrl: 'https://enicar-connect.onrender.com/api',
+  wsUrl: 'wss://enicar-connect.onrender.com/ws'
 };

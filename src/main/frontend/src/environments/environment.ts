@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/api',
-  wsUrl: 'http://localhost:8081/ws'
+  apiUrl: 'https://enicar-connect.onrender.com/api',
+  wsUrl: 'wss://enicar-connect.onrender.com/ws'
 };

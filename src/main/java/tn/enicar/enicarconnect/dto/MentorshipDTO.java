@@ -15,7 +15,9 @@ public class MentorshipDTO {
     private String partnerName;
     private String partnerRole;
     private String partnerDepartment;
-
+    private String partnerPhotoUrl;
+    private String partnerAvatarBg;
+    private String partnerAvatarColor;
     private String objective;
     private String status;
     private String date;

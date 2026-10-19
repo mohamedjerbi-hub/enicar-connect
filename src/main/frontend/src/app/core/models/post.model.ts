@@ -8,6 +8,7 @@ export interface CommentData {
     authorRole: string;
     authorAvatarColor: string;
     authorAvatarBg: string;
+    authorPhoto?: string;
     text: string;
     createdAt: string;
 }
@@ -26,6 +27,7 @@ export interface Post {
     authorRole: string;
     authorAvatarColor: string;
     authorAvatarBg: string;
+    authorPhoto?: string;
     groupId?: number | null;
     body: string;
     visibility: string;

@@ -31,17 +31,22 @@ export class ResourceService {
         return this.resources$;
     }
 
-    upload(file: File, title: string, category: string, icon: string, size: string): void {
+    upload(file: File, title: string, category: string, icon: string, size: string, groupId?: number): void {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('title', title);
         formData.append('category', category);
         formData.append('icon', icon);
         formData.append('size', size);
+        if (groupId) formData.append('groupId', groupId.toString());
 
         this.http.post<Resource>(this.API, formData).pipe(
             tap(newRes => this._resources.next([newRes, ...this._resources.value]))
         ).subscribe();
+    }
+
+    getGroupResources(groupId: number): Observable<Resource[]> {
+        return this.http.get<Resource[]>(`${this.API}/group/${groupId}`);
     }
 
     delete(id: number): void {

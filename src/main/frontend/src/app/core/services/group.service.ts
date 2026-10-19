@@ -58,4 +58,8 @@ export class GroupService {
             }
         });
     }
+
+    getMembers(id: number): Observable<any[]> {
+        return this.http.get<any[]>(`${this.API}/${id}/members`);
+    }
 }
