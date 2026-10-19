@@ -47,7 +47,7 @@ class ResourceServiceTest {
         when(storage.storeFile(any())).thenReturn("stored.pdf");
         when(resources.save(any(ResourceFile.class))).thenReturn(resource);
         var file = new MockMultipartFile("file", "cours.pdf", "application/pdf", "data".getBytes());
-        assertEquals("Cours", service.uploadResource(file, "Cours", "Cours", "book", "2 MB", 1L).getTitle());
+        assertEquals("Cours", service.uploadResource(file, "Cours", "Cours", "book", "2 MB", 1L, null).getTitle());
     }
 
     @Test
