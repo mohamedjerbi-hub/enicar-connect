@@ -48,20 +48,18 @@ public class SecurityConfig {
                         // Public endpoints
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Admin-only endpoints
-                        .requestMatchers("/api/users", 
-                                         "/api/documents/pending", 
-                                         "/api/documents/{id}/approve", 
-                                         "/api/documents/{id}/reject").hasAnyRole("ADMIN_STAFF", "DIRECTION")
-                        // Authenticated new endpoints explicitly registered
-                        .requestMatchers("/api/documents/request", 
-                                         "/api/documents/my-requests", 
-                                         "/api/documents/{id}/download",
-                                         "/api/grades/my-grades", 
-                                         "/api/grades/reclamation").authenticated()
-                        // All other API endpoints require authentication
+                        // Admin-only: full user list and document management
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN_STAFF", "DIRECTION")
+                        .requestMatchers("/api/documents/pending",
+                                         "/api/documents/*/approve",
+                                         "/api/documents/*/reject").hasAnyRole("ADMIN_STAFF", "DIRECTION")
+                        // All authenticated users can access directory, profiles, and all other /api/**
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll())
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' http://localhost:8081 http://localhost:4200; frame-ancestors 'none';"))
+                        .frameOptions(frame -> frame.deny()))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -71,8 +69,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        List<String> origins = new java.util.ArrayList<>(List.of(allowedOrigins.split(",")));
+        // Always allow the embedded frontend and common dev origins
+        origins.add("http://localhost:8081");
+        origins.add("http://localhost:4200");
+        config.setAllowedOrigins(origins.stream().map(String::trim).distinct().collect(java.util.stream.Collectors.toList()));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);

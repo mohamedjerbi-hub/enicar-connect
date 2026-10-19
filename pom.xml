@@ -20,6 +20,7 @@
     <properties>
         <java.version>17</java.version>
         <jjwt.version>0.12.5</jjwt.version>
+        <frontend.skip>false</frontend.skip>
     </properties>
 
     <dependencies>
@@ -117,10 +118,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- 7. Aspect-Oriented Programming (AOP) -->
+        <!-- Cucumber BDD (Behavior-Driven Development) -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.16.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>7.16.1</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- 6. JSF (JoinFaces) for minimal server-side rendering -->
@@ -175,6 +184,7 @@
                     <workingDirectory>src/main/frontend</workingDirectory>
                     <nodeVersion>v20.12.2</nodeVersion>
                     <npmVersion>10.5.0</npmVersion>
+                    <skip>${frontend.skip}</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -253,11 +263,64 @@
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
+                        <configuration>
+                            <includes>
+                                <include>tn/enicar/enicarconnect/service/**</include>
+                                <include>tn/enicar/enicarconnect/security/**</include>
+                                <include>tn/enicar/enicarconnect/aspect/**</include>
+                            </includes>
+                        </configuration>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>check-business-coverage</id>
+                        <phase>verify</phase>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.70</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                            <includes>
+                                <include>tn/enicar/enicarconnect/service/**</include>
+                                <include>tn/enicar/enicarconnect/security/**</include>
+                                <include>tn/enicar/enicarconnect/aspect/**</include>
+                            </includes>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
                 </executions>
+            </plugin>
+
+            <!-- SpotBugs — static analysis + FindSecurityBugs for OWASP/security patterns -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.8.3.1</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <htmlOutput>true</htmlOutput>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>1.13.0</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
             </plugin>
 
             <!-- Pin Surefire to a locally cached version to avoid flaky Central lookups during install -->

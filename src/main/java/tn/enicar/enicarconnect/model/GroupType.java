@@ -5,5 +5,6 @@ public enum GroupType {
     PROMOTION, // Par promotion / année d'études
     CLUB, // Clubs et associations étudiantes
     THEMATIC, // Groupes thématiques (sport, culture, etc.)
-    PROJECT // Groupes de projet
+    PROJECT, // Groupes de projet
+    ALUMNI // Groupes d'anciens diplômés
 }

@@ -26,16 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable : " + email));
 
         // Combine ROLE_xxx + individual permissions as authorities
-        List<SimpleGrantedAuthority> authorities = Stream.concat(
+        List<SimpleGrantedAuthority> auths = Stream.concat(
                 Stream.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())),
                 rolePermissionConfig.getPermissions(user.getRole()).stream()
                         .map(p -> new SimpleGrantedAuthority(p.name()))
         ).toList();
+        
+        user.setAuthorities(auths);
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
-        );
+        return user;
     }
 }

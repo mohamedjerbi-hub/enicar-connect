@@ -34,4 +34,14 @@
       checks="MethodName"
       files="[\\/]test[\\/]"/>
 
+  <!-- DatabaseSeeder contains extensive realistic mock data setup for demonstration -->
+  <suppress
+      checks="MethodLength"
+      files="DatabaseSeeder\.java"/>
+
+  <!-- Test files commonly use static star imports for Mockito and AssertJ -->
+  <suppress
+      checks="AvoidStarImport"
+      files="[\\/]test[\\/]"/>
+
 </suppressions>

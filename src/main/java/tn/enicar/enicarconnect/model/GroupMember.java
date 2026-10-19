@@ -22,6 +22,7 @@ public class GroupMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
+    @ToString.Exclude
     private AppGroup group;
 
     @ManyToOne(fetch = FetchType.LAZY)

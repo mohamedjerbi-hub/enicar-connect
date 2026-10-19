@@ -5,7 +5,11 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +62,9 @@ public class User {
 
     private String avatarColor;
     private String avatarBg;
+    
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -78,5 +85,43 @@ public class User {
         String f = (firstName != null && !firstName.isEmpty()) ? firstName.substring(0, 1) : "";
         String l = (lastName != null && !lastName.isEmpty()) ? lastName.substring(0, 1) : "";
         return (f + l).toUpperCase();
+    }
+
+    // --- UserDetails implementation ---
+
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    @Transient
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isEnabled() {
+        return true;
     }
 }

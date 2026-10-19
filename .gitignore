@@ -6,6 +6,7 @@
 .DS_Store
 Thumbs.db
 .tools/
+node_modules/
 
 # ─── Secrets ──────────────────────────────────────────
 .env
@@ -32,6 +33,11 @@ src/main/frontend/node/
 src/main/frontend/coverage/
 src/main/frontend/.sass-cache/
 
+# ─── E2E generated reports ────────────────────────────
+tests/e2e/playwright-report/
+tests/e2e/test-results/
+tests/e2e/screenshots/
+
 # Anciens dossiers parallèles
 enicar-connect-backend/
 enicar-connect-frontend/
@@ -40,7 +46,8 @@ enicar-connect-frontend/
 *.bak
 *.swp
 *~
+scratch/
+hs_err_pid*.log
 
 # Divers
-requirements.txt
-scripts/
+report.md

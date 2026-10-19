@@ -113,7 +113,10 @@ The ideation, architecture, and coding responsibilities are equally divided acro
 ---
 
 ## 📄 License & Contributing
-Tasks, Bug Tracking, and Feature Specifications are intensely managed via the **Issues** and **Projects** boards associated with this GitHub repository. Contributions must align with the `docs/design/cahier_des_charges.md`.
+Tasks, bug tracking, and feature specifications are managed via the **Issues**
+and **Projects** boards associated with this GitHub repository. The functional
+specification is maintained in the local PFE report, and the architecture is
+documented in [docs/design/architecture.md](docs/design/architecture.md).
 
 ---
 

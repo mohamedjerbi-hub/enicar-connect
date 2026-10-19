@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;

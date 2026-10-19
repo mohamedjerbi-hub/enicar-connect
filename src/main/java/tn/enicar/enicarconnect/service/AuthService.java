@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import tn.enicar.enicarconnect.config.RolePermissionConfig;
 import tn.enicar.enicarconnect.dto.*;
 import tn.enicar.enicarconnect.model.AppGroup;
-import tn.enicar.enicarconnect.model.GroupKind;
 import tn.enicar.enicarconnect.model.Role;
 import tn.enicar.enicarconnect.model.MemberRole;
 import tn.enicar.enicarconnect.model.User;

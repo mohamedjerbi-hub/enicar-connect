@@ -1,5 +1,5 @@
 # ─── Stage 1: Build ───────────────────────────────────────────
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM eclipse-temurin:17-jdk-jammy AS builder
 
 # Install Node.js for the frontend build (frontend-maven-plugin handles local node, but having it available helps edge cases, though the plugin downloads it locally)
 # Actually, frontend-maven-plugin downloads its own Node.js, so just standard Maven is fine.
@@ -9,7 +9,7 @@ WORKDIR /app
 # Copy Maven wrapper and pom first (layer cache)
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -q
+RUN chmod +x mvnw
 
 # Copy the entire source (Java + Angular)
 COPY src ./src

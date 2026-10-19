@@ -91,16 +91,36 @@ public class UserService {
 
     private String buildUpdatedFields(UserDTO dto) {
         StringBuilder builder = new StringBuilder();
-        if (dto.getFirstName() != null) builder.append("firstName,");
-        if (dto.getLastName() != null) builder.append("lastName,");
-        if (dto.getPhone() != null) builder.append("phone,");
-        if (dto.getBio() != null) builder.append("bio,");
-        if (dto.getWebsite() != null) builder.append("website,");
-        if (dto.getLinkedin() != null) builder.append("linkedin,");
-        if (dto.getGithub() != null) builder.append("github,");
-        if (dto.getDepartment() != null) builder.append("department,");
-        if (dto.getLevel() != null) builder.append("level,");
-        if (dto.getSkills() != null) builder.append("skills,");
+        if (dto.getFirstName() != null) {
+            builder.append("firstName,");
+        }
+        if (dto.getLastName() != null) {
+            builder.append("lastName,");
+        }
+        if (dto.getPhone() != null) {
+            builder.append("phone,");
+        }
+        if (dto.getBio() != null) {
+            builder.append("bio,");
+        }
+        if (dto.getWebsite() != null) {
+            builder.append("website,");
+        }
+        if (dto.getLinkedin() != null) {
+            builder.append("linkedin,");
+        }
+        if (dto.getGithub() != null) {
+            builder.append("github,");
+        }
+        if (dto.getDepartment() != null) {
+            builder.append("department,");
+        }
+        if (dto.getLevel() != null) {
+            builder.append("level,");
+        }
+        if (dto.getSkills() != null) {
+            builder.append("skills,");
+        }
         return builder.length() == 0 ? "none" : builder.substring(0, builder.length() - 1);
     }
 }
