@@ -12,6 +12,7 @@ import tn.enicar.enicarconnect.model.MentorshipRequest;
 import tn.enicar.enicarconnect.model.Role;
 import tn.enicar.enicarconnect.model.User;
 import tn.enicar.enicarconnect.repository.MentorshipRequestRepository;
+import tn.enicar.enicarconnect.repository.ChatMessageRepository;
 import tn.enicar.enicarconnect.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,9 @@ class MentorshipServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ChatMessageRepository chatMessageRepository;
 
     @InjectMocks
     private MentorshipService mentorshipService;

@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import tn.enicar.enicarconnect.service.DocumentService;
 import tn.enicar.enicarconnect.service.UserService;
+import tn.enicar.enicarconnect.support.AbstractPostgresIntegrationTest;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "postgres"})
 @DisplayName("Security & RBAC Integration Tests (Senior QA)")
-class SecurityRbacTest {
+class SecurityRbacTest extends AbstractPostgresIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
